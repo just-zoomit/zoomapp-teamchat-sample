@@ -1,4 +1,4 @@
-# Advanced Zoom Apps Sample
+# Zoom Apps Team Chat Sample
 
 Advanced Sample covers most complex scenarios that might be needed in apps.
 
@@ -89,6 +89,9 @@ Follow these instructions for the "Development" section
     - `getRunningContext`
     - `getSupportedjsApis`
     - `getUserContext`
+    - `GetMeetingContextResponse`
+    - `GetChatContext`
+    - `composeCard`
     - `listCameras`
     - `onActiveSpeakerChange`
     - `onAuthorized`
