@@ -2,12 +2,12 @@
 import React, { useEffect, useState } from "react";
 import { Route, Redirect, useLocation } from "react-router-dom";
 import Button from "react-bootstrap/Button";
-import Auth0User from "./Auth0User";
 import Header from "./Header";
-import IFrame from "./IFrame";
-import Image from "./Image";
 import UserInfo from "./UserInfo";
 import Teamchat from "./Teamchat";
+
+import IFrame from "./IFrame";
+import Image from "./Image";
 
 export const Authorization = (props) => {
   const {
@@ -179,8 +179,7 @@ export const Authorization = (props) => {
         </Route>
       </div>
 
-      <Header navLinks={{ auth0Data: "Auth0 User Data" }} />
-      <Auth0User user={user} />
+  
     </>
   );
 };

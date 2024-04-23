@@ -2,3 +2,13 @@
     height: 300px;
     margin-bottom: 6px;
 }
+
+.button-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .button-space {
+    margin-right: 10px; /* Adjust the value to set the desired space */
+  }
+  
