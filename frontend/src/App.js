@@ -140,10 +140,12 @@ function App() {
           console.log("Connected to meeting:", event);
           setConnected(true);
           
+          if((runningContext ===  "inImmersive" || "inCollaborate" || "inCamera"|| "inWebinar") ){
           zoomSdk.getMeetingChatContext().then((chatContext) => {
             console.log("Meeting Chat Context: ", chatContext.chatChannelUUID);
             setMeetingChatContext(chatContext.chatChannelUUID);
           });
+        }
 
           // PRE-MEETING
           // first message to send after connecting instances is for the meeting
@@ -224,7 +226,6 @@ function App() {
         user={user}
         userContextStatus={userContextStatus}
         meetingChatContext={meetingChatContext}
-     
       />
 
     </div>

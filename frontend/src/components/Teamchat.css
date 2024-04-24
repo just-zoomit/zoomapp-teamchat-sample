@@ -1,15 +1,17 @@
-.teamchat-sample {
-    height: 300px;
-    margin-bottom: 6px;
-}
-
-.button-container {
+.Teamchat-sample {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    height: 100vh;
   }
   
-  .button-space {
-    margin-right: 10px; /* Adjust the value to set the desired space */
+  .button-container {
+    margin-bottom: 10px;
+  }
+  
+  .chat-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
   }
   
   .notification {
@@ -20,3 +22,10 @@
     border-radius: 4px;
     margin-top: 10px;
   }
+  
+  /* Adjust the chat input height and margin */
+  .chat-container textarea {
+    height: 100px;
+    margin-bottom: 10px;
+  }
+  
