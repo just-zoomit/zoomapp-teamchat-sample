@@ -134,7 +134,7 @@ const apis = [
     }
   },
   {
-    name: 'getMeetingContext' // Add this
+    name: 'getMeetingContextResponse' // Add this
   },
   {
     name: 'getChatContext' // Add this

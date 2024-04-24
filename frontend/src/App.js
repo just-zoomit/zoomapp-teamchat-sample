@@ -14,6 +14,7 @@ function App() {
   const location = useLocation();
   const [error, setError] = useState(null);
   const [user, setUser] = useState(null);
+  const [meetingChatContext,setMeetingChatContext] = useState(null);
   const [runningContext, setRunningContext] = useState(null);
   const [connected, setConnected] = useState(false);
   const [counter, setCounter] = useState(0);
@@ -136,8 +137,13 @@ function App() {
       // only can call connect when in-meeting
       if (runningContext === "inMeeting") {
         zoomSdk.addEventListener("onConnect", (event) => {
-          console.log("Connected");
+          console.log("Connected to meeting:", event);
           setConnected(true);
+          
+          zoomSdk.getMeetingChatContext().then((chatContext) => {
+            console.log("Meeting Chat Context: ", chatContext.chatChannelUUID);
+            setMeetingChatContext(chatContext.chatChannelUUID);
+          });
 
           // PRE-MEETING
           // first message to send after connecting instances is for the meeting
@@ -203,6 +209,12 @@ function App() {
           "Configuring Zoom JavaScript SDK..."
         }
       </p>
+      <p>
+        {connected ?
+          `Meeting Chat Context: ${meetingChatContext}`:
+          "Connecting to meeting..."
+        }
+      </p>
 
       <ApiScrollview />
       <Authorization
@@ -211,6 +223,8 @@ function App() {
         handleUser={setUser}
         user={user}
         userContextStatus={userContextStatus}
+        meetingChatContext={meetingChatContext}
+     
       />
 
     </div>

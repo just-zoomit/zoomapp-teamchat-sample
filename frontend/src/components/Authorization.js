@@ -16,6 +16,7 @@ export const Authorization = (props) => {
     handleUserContextStatus,
     user,
     userContextStatus,
+    meetingChatContext,
   } = props;
   const location = useLocation();
   const [userAuthorized, setUserAuthorized] = useState(null);
@@ -74,11 +75,9 @@ export const Authorization = (props) => {
       const { code, state } = event;
       console.log("3. onAuthorized event fired.");
       console.log(
-        "3a. Here is the event passed to event listener callback, with code and state: ",
-        event
-      );
+        "3a. Here is the event passed to event listener callback, with code and state: ", event);
       console.log(
-        "4. POST the code, state to backend to exchange server-side for a token.  Refer to backend logs now . . ."
+        "4. POST the code and state to backend to exchange server-side for a token.  Refer to backend logs now . . ."
       );
 
       fetch("/api/zoomapp/onauthorized", {
@@ -105,12 +104,15 @@ export const Authorization = (props) => {
 
   useEffect(() => {
     zoomSdk.addEventListener("onMyUserContextChange", (event) => {
+      console.log("User context status change event fired", event);
       handleUserContextStatus(event.status);
     });
+
     async function fetchUser() {
       try {
         // An example of using the Zoom REST API via proxy
         const response = await fetch("/zoom/api/v2/users/me");
+        console.log("Response from Zoom REST API", response);
         if (response.status !== 200) throw new Error();
         const user = await response.json();
         handleUser(user);
@@ -124,6 +126,10 @@ export const Authorization = (props) => {
         // setError("There was an error getting your user information");
       }
     }
+
+    
+
+
 
     if (userContextStatus === "authorized") {
       setInGuestMode(false);
@@ -171,7 +177,11 @@ export const Authorization = (props) => {
         </Route>
 
         <Route path="/teamchat">
-          <Teamchat />
+          <Teamchat 
+            user={user}
+            userContextStatus={userContextStatus}
+            meetingChatContext={meetingChatContext}
+          />
         </Route>
 
         <Route path="/iframe">

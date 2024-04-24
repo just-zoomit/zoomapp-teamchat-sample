@@ -2,7 +2,12 @@ import "./Teamchat.css";
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 
-function Teamchat() {
+const Teamchat = (props) => {
+    const {
+        user,
+        userContextStatus,
+        meetingChatContext,
+      } = props;
   const [showNotification, setShowNotification] = useState(false);
 
   const handleButtonClick = () => {
@@ -31,9 +36,15 @@ function Teamchat() {
       </p>
       <p>It is a great way to communicate and collaborate with your team.</p>
       <p>Teamchat is available in the Zoom Apps sidebar.</p>
-      
+      <p>
+        {meetingChatContext ?
+          `Meeting Chat Context: ${meetingChatContext}`:
+          "Connecting to meeting..."}
+      </p>
     </div>
   );
-}
+};
 
 export default Teamchat;
+
+
