@@ -40,17 +40,13 @@ const sendaChatMessage = async (req, res, next) => {
    
     req.appUser = appUser
     const { accessToken } = appUser
-    console.log('02. Get user from Access Token', accessToken)
-    console.log('03.Chat Message Sent:', req.body)
+    
     const response = await zoomApi.sendaChatMessage(accessToken, req.body)
     return next()
   } catch (error) {
     return next(new Error('Error getting user from session: ', error))
   }
 }
-
-
-
 
 
 const refreshToken = async (req, res, next) => {
@@ -68,9 +64,7 @@ const refreshToken = async (req, res, next) => {
       console.log('2. User access token expired')
       console.log('2a. Refresh Zoom REST API access token')
 
-      const tokenResponse = await zoomApi.refreshZoomAccessToken(
-        user.refreshToken
-      )
+      const tokenResponse = await zoomApi.refreshZoomAccessToken( user.refreshToken)
 
       console.log('2b. Save refreshed user token')
       await store.updateUser(req.session.user, {

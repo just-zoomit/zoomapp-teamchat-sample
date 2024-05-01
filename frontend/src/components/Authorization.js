@@ -127,65 +127,10 @@ export const Authorization = (props) => {
       }
     }
 
-    async function fetchUserMessage() {
-      try { 
-        const data = {
-          "at_items": [
-            {
-              "at_contact": "donte.small@zoom.us",
-              "at_type": 1,
-              "end_position": 8,
-              "start_position": 0
-            }
-          ],
-          "rich_text": [
-            {
-              "start_position": 0,
-              "end_position": 5,
-              "format_type": "Paragraph",
-              "format_attr": "h1"
-            }
-          ],
-          "message": "@Donte, How are you today good friend?",
-          "file_ids": [""],
-          "reply_main_message_id": "",
-          "to_channel": "web_sch_b36089d990454f21afd7ad5e6eb5d1db@conference.xmpp.zoom.us",
-          "to_contact": ""
-        };
-    
-        const response = await fetch("/zoom/api/v2/chat/users/me/messages", {
-          method: 'POST',
-          body: JSON.stringify(data), 
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-    
-        console.log("Response from Zoom REST API", response);
-    
-        if (!response.ok) {
-          throw new Error("Failed to fetch user message");
-        }
-    
-        const user = await response.json();
-        handleUser(user);
-        setShowInClientOAuthPrompt(false);
-      } catch (error) {
-        console.error(error);
-        console.log(
-          "Request to Zoom REST API has failed ^, likely because no Zoom access token exists for this user. You must use the authorize API to get an access token"
-        );
-        setShowInClientOAuthPrompt(true);
-        // setError("There was an error getting your user information");
-      }
-    }
-    
-
-  
     if (userContextStatus === "authorized") {
       setInGuestMode(false);
       fetchUser();
-      fetchUserMessage();
+
     } else if (
       userContextStatus === "unauthenticated" ||
       userContextStatus === "authenticated"

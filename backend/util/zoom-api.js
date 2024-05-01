@@ -59,7 +59,7 @@ const getZoomUser = async (accessToken) => {
 }
 
 const sendaChatMessage  = async (accessToken, data ) => {
-  console.log('Data Recieved For Chat Message', data)
+  console.log('Data Recieved For Chat Message:' +  '\n', data)
 
   return await axios({
     url: `${process.env.ZOOM_HOST}/v2/chat/users/me/messages`,

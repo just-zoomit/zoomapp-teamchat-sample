@@ -15,11 +15,59 @@ const Teamchat = (props) => {
   const handleSend = () => {
     // Send message to backend
     console.log("Sending message:", message);
+
+    fetchUserMessage(message);
+
     setMessage(""); // Clear input field
     setShowNotification(true);
     setTimeout(() => {
       setShowNotification(false);
     }, 2000); // Hide the notification after 2 seconds
+  };
+
+  const fetchUserMessage = async (message) => {
+    try {
+      const data = {
+        "at_items": [
+          {
+            "at_contact": "donte.small@zoom.us",
+            "at_type": 1,
+            "end_position": 8,
+            "start_position": 0
+          }
+        ],
+        "rich_text": [
+          {
+            "start_position": 0,
+            "end_position": 5,
+            "format_type": "Paragraph",
+            "format_attr": "h1"
+          }
+        ],
+        "message": message,
+        "file_ids": [""],
+        "reply_main_message_id": "",
+        "to_channel": "web_sch_b36089d990454f21afd7ad5e6eb5d1db@conference.xmpp.zoom.us",
+        "to_contact": ""
+      };
+
+      const response = await fetch("/zoom/api/v2/chat/users/me/messages", {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      console.log("Response from Zoom REST API", response);
+
+      if (!response.ok) throw new Error("Failed to fetch user message");
+
+      const responseData = await response.json();
+      console.log("User message response:", responseData);
+    } catch (error) {
+      console.error("Error fetching user message:", error);
+    }
   };
 
   return (
