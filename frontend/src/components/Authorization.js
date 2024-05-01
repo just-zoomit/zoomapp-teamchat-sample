@@ -130,7 +130,6 @@ export const Authorization = (props) => {
     if (userContextStatus === "authorized") {
       setInGuestMode(false);
       fetchUser();
-
     } else if (
       userContextStatus === "unauthenticated" ||
       userContextStatus === "authenticated"

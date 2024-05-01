@@ -16,7 +16,7 @@ const Teamchat = (props) => {
     // Send message to backend
     console.log("Sending message:", message);
 
-    fetchUserMessage(message);
+    fetchUserMessage(message, meetingChatContext);
 
     setMessage(""); // Clear input field
     setShowNotification(true);
@@ -25,7 +25,9 @@ const Teamchat = (props) => {
     }, 2000); // Hide the notification after 2 seconds
   };
 
-  const fetchUserMessage = async (message) => {
+  const fetchUserMessage = async (message, meetingChatContext) => {
+   
+    
     try {
       const data = {
         "at_items": [
@@ -47,7 +49,7 @@ const Teamchat = (props) => {
         "message": message,
         "file_ids": [""],
         "reply_main_message_id": "",
-        "to_channel": "web_sch_b36089d990454f21afd7ad5e6eb5d1db@conference.xmpp.zoom.us",
+        "to_channel": meetingChatContext,
         "to_contact": ""
       };
 
@@ -73,12 +75,7 @@ const Teamchat = (props) => {
   return (
     <div className="Teamchat-sample">
      
-      <p>
-        Teamchat is a feature that allows you to chat with your team members.
-        It is a great way to communicate and collaborate with your team.
-      </p>
-
-      <p>Teamchat is available in the Zoom Apps sidebar.</p>
+      <h2>Team Chat</h2>
       <p>
         {meetingChatContext
           ? `Meeting Chat Context: ${meetingChatContext}`

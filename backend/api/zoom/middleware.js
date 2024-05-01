@@ -4,7 +4,6 @@ const store = require('../../util/store')
 // API PROXY MIDDLEWARE ==========================================================
 // Middleware to automatically refresh an auth token in case of expiration
 const getUser = async (req, res, next) => {
-
   const zoomUserId = req?.session?.user
   if (!zoomUserId) {
     return next(
@@ -24,30 +23,24 @@ const getUser = async (req, res, next) => {
 }
 
 // Send a Chat Message
-const sendaChatMessage = async (req, res, next) => {
+const sendAChatMessage = async (req, res, next) => {
   
-  const zoomUserId = req?.session?.user
-  if (!zoomUserId) {
-    return next(
-      new Error(
-        'No session or no user. You may need to close and reload or reinstall the application'
-      )
-    )
-  }
-
-  try {
-    const appUser = await store.getUser(zoomUserId)
    
-    req.appUser = appUser
-    const { accessToken } = appUser
-    
-    const response = await zoomApi.sendaChatMessage(accessToken, req.body)
-    return next()
-  } catch (error) {
-    return next(new Error('Error getting user from session: ', error))
-  }
-}
+   
+  
+    try {
+      const users = req.appUser
+      console.log('3. Send a chat message', users.accessToken)
+  
 
+   //Problematic request, when uncommented, the app crashes, not able use getUser 
+    const response = await zoomApi.sendAChatMessage(users.accessToken, req.body)
+    
+  } catch (error) {
+    return next(new Error('Error sending chat message ', error))
+  }
+  return next()
+}
 
 const refreshToken = async (req, res, next) => {
   console.log('1. Check validity of access token')
@@ -64,7 +57,9 @@ const refreshToken = async (req, res, next) => {
       console.log('2. User access token expired')
       console.log('2a. Refresh Zoom REST API access token')
 
-      const tokenResponse = await zoomApi.refreshZoomAccessToken( user.refreshToken)
+      const tokenResponse = await zoomApi.refreshZoomAccessToken(
+        user.refreshToken
+      )
 
       console.log('2b. Save refreshed user token')
       await store.updateUser(req.session.user, {
@@ -80,6 +75,8 @@ const refreshToken = async (req, res, next) => {
 
   return next()
 }
+
+
 
 // AUTH HEADER MIDDLEWARE ===================================================
 const setZoomAuthHeader = async (req, res, next) => {
@@ -104,4 +101,6 @@ const setZoomAuthHeader = async (req, res, next) => {
   }
 }
 
-module.exports = { getUser,sendaChatMessage, refreshToken, setZoomAuthHeader }
+
+
+module.exports = { getUser, sendAChatMessage, refreshToken, setZoomAuthHeader }
