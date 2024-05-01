@@ -27,8 +27,9 @@ const Teamchat = (props) => {
      
       <p>
         Teamchat is a feature that allows you to chat with your team members.
+        It is a great way to communicate and collaborate with your team.
       </p>
-      <p>It is a great way to communicate and collaborate with your team.</p>
+
       <p>Teamchat is available in the Zoom Apps sidebar.</p>
       <p>
         {meetingChatContext
@@ -40,12 +41,12 @@ const Teamchat = (props) => {
           ? `User Context Status: ${userContextStatus}`
           : "Configuring Zoom JavaScript SDK..."}
       </p>
-
       <div className="button-container">
         <Button variant="primary" onClick={handleSend}>
           Send
         </Button>
       </div>
+      
       <div className="chat-container">
         <Form.Control
           as="textarea"
@@ -55,6 +56,7 @@ const Teamchat = (props) => {
           placeholder="Type your message here..."
         />
       </div>
+     
       {showNotification && (
         <div className="notification">Message sent!</div>
       )}

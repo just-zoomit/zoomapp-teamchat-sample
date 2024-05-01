@@ -4,6 +4,7 @@ const store = require('../../util/store')
 // API PROXY MIDDLEWARE ==========================================================
 // Middleware to automatically refresh an auth token in case of expiration
 const getUser = async (req, res, next) => {
+
   const zoomUserId = req?.session?.user
   if (!zoomUserId) {
     return next(
@@ -21,6 +22,36 @@ const getUser = async (req, res, next) => {
     return next(new Error('Error getting user from session: ', error))
   }
 }
+
+// Send a Chat Message
+const sendaChatMessage = async (req, res, next) => {
+  
+  const zoomUserId = req?.session?.user
+  if (!zoomUserId) {
+    return next(
+      new Error(
+        'No session or no user. You may need to close and reload or reinstall the application'
+      )
+    )
+  }
+
+  try {
+    const appUser = await store.getUser(zoomUserId)
+   
+    req.appUser = appUser
+    const { accessToken } = appUser
+    console.log('02. Get user from Access Token', accessToken)
+    console.log('03.Chat Message Sent:', req.body)
+    const response = await zoomApi.sendaChatMessage(accessToken, req.body)
+    return next()
+  } catch (error) {
+    return next(new Error('Error getting user from session: ', error))
+  }
+}
+
+
+
+
 
 const refreshToken = async (req, res, next) => {
   console.log('1. Check validity of access token')
@@ -79,4 +110,4 @@ const setZoomAuthHeader = async (req, res, next) => {
   }
 }
 
-module.exports = { getUser, refreshToken, setZoomAuthHeader }
+module.exports = { getUser,sendaChatMessage, refreshToken, setZoomAuthHeader }
