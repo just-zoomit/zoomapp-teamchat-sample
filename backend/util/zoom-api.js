@@ -58,20 +58,7 @@ const getZoomUser = async (accessToken) => {
   })
 }
 
-const sendAChatMessage  = async (accessToken, data) => {
 
-  console.log("Chat Data: ", data)
-
-  return await axios({
-    url: `${process.env.ZOOM_HOST}/v2/chat/users/me/messages`,
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`
-    },
-    data:data
-  })
-}
 
 const getDeeplink = async (accessToken) => {
   return await axios({
@@ -91,10 +78,25 @@ const getDeeplink = async (accessToken) => {
   })
 }
 
+const sendAChatMessage  = async (accessToken,data) => {
+
+  console.log("Chat Data: ", data)
+
+  return await axios({
+    url: `${process.env.ZOOM_HOST}/v2/chat/users/me/messages`,
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`
+    },
+    data:data
+  })
+}
+
 module.exports = {
   getZoomAccessToken,
   refreshZoomAccessToken,
   getZoomUser,
-  sendAChatMessage,
   getDeeplink,
+  sendAChatMessage
 }

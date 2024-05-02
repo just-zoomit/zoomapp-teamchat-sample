@@ -53,7 +53,7 @@ const Teamchat = (props) => {
         "to_contact": ""
       };
 
-      const response = await fetch("/zoom/api/v2/chat/users/me/messages", {
+      const response = await fetch("/zoom/sendAChatMessage", {
         method: 'POST',
         body: JSON.stringify(data),
         headers: {

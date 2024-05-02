@@ -1,13 +1,12 @@
 const { Router } = require('express')
 const router = Router()
 const controller = require('./controller')
-const { getUser,  sendAChatMessage, refreshToken, setZoomAuthHeader } = require('./middleware')
+const { getUser,  refreshToken, setZoomAuthHeader} = require('./middleware')
 router.use(
   '/api',
   getUser,
-  sendAChatMessage,
   refreshToken,
   setZoomAuthHeader,
-  controller.proxy
-)
+  controller.proxy,
+  ).post('/sendAChatMessage', controller.sendAChatMessage)
 module.exports = router
