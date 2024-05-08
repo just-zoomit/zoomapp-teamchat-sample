@@ -31,6 +31,27 @@ const getZoomAccessToken = async (
     data: tokenRequestParamString,
   })
 }
+// Add this
+const getChatbotToken = async () => {
+  try {
+    const response = await axios.post('https://api.zoom.us/oauth/token', null, {
+      headers: {
+        'Authorization': `Basic ${Buffer.from(`${process.env.ZOOM_APP_CLIENT_ID}:${process.env.ZOOM_APP_CLIENT_SECRET}`).toString('base64')}`
+      },
+      params: {
+        grant_type: 'client_credentials'
+      }
+    });
+
+    if (response.status !== 200) {
+      throw new Error('Error getting chatbot_token from Zoom');
+    }
+
+    return response.data.access_token;
+  } catch (error) {
+    throw new Error('Error getting chatbot_token from Zoom');
+  }
+}
 
 const refreshZoomAccessToken = async (zoomRefreshToken) => {
   const searchParams = new URLSearchParams()
@@ -58,8 +79,6 @@ const getZoomUser = async (accessToken) => {
   })
 }
 
-
-
 const getDeeplink = async (accessToken) => {
   return await axios({
     url: `${process.env.ZOOM_HOST}/v2/zoomapp/deeplink`,
@@ -78,9 +97,8 @@ const getDeeplink = async (accessToken) => {
   })
 }
 
+// Add this
 const sendAChatMessage  = async (accessToken,data) => {
-
-  console.log("Chat Data: ", data)
 
   return await axios({
     url: `${process.env.ZOOM_HOST}/v2/chat/users/me/messages`,
@@ -92,11 +110,82 @@ const sendAChatMessage  = async (accessToken,data) => {
     data:data
   })
 }
+// Add this
+function generateChatBody(recordings, payload) {
+  const chatBody = {
+    robot_jid: process.env.ZOOM_BOT_JID,
+    to_jid: payload.toJid,
+    user_jid: payload.userJid,
+    account_id: payload.accountId,
+    visible_to_user: true,
+    content: {
+      head: {
+        text: 'Your recordings:',
+        sub_head: {
+          text: `Sent by ${payload.userName}`
+        }
+      },
+      body: recordings.meetings.flatMap(meeting => [
+        { type: 'message', text: `Meeting ID: ${meeting.id}` },
+        { type: 'message', text: `Meeting UUID: ${meeting.uuid}` },
+        { type: 'message', text: `Start Time: ${meeting.start_time}` },
+        { type: 'message', text: meeting.topic, link: meeting.share_url }
+      ])
+    }
+  };
+
+  return chatBody;
+}
+
+// Add this
+async function sendIMChat(chatBody, chatbotToken) {
+  const response = await axios({
+    url: 'https://api.zoom.us/v2/im/chat/messages',
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${chatbotToken}`
+    },
+    data: chatBody
+  });
+
+  console.log('send chat response status', response.status);
+  if (response.status >= 400) {
+    throw new Error('Error sending chat');
+  }
+}
+
+// Add this
+const getZoomRecordings = async (accessToken, from, to) => {
+
+  try {
+    const response = await axios({
+      url: `${process.env.ZOOM_HOST}/v2/users/me/recordings?from=${from}&to=${to}`,
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`
+      }
+    });
+
+    // Return just the data part of the response
+    return response.data;
+  } catch (error) {
+    console.error('Failed to fetch Zoom recordings:', error);
+    // Handle errors, possibly re-throwing them or returning a default
+    throw error; // Re-throwing the error for the caller to handle
+  }
+}
+
 
 module.exports = {
   getZoomAccessToken,
+  getChatbotToken,
   refreshZoomAccessToken,
   getZoomUser,
   getDeeplink,
-  sendAChatMessage
+  sendAChatMessage,
+  getZoomRecordings, 
+  sendIMChat,
+  generateChatBody
 }

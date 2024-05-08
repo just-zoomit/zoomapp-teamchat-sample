@@ -4,6 +4,8 @@ const store = require('../../util/store')
 
 module.exports = {
 
+  
+
 // Send a Chat Message
 async sendAChatMessage(req, res, next) {
   try {
@@ -17,17 +19,41 @@ async sendAChatMessage(req, res, next) {
   }
 
   const appUser = await store.getUser(users)
+  req.appUser = appUser
 
-
-  // console.log('App User: ', appUser)
-
- //Problematic request, when uncommented, the app crashes, not able use getUser 
   const response = await zoomApi.sendAChatMessage(appUser.accessToken, req.body)
 
 } catch (error) {
   return next(new Error('Error sending chat message ', error))
 }
 
+}, // Add this
+async sendAChatCommand(req, res, next) {
+  console.log('SEND A CHAT COMMAND HANDLER');
+  const { userId, cmd: command } = req.body.payload;
+  if (!command) {
+    return res.status(200).send();
+  }
+
+  const [from, to] = command.split(',').map(date => date.trim());
+  console.log("Processing command:", command, "From:", from, "To:", to);
+
+  if (req.headers.authorization !== process.env.zoom_verification_token) {
+    return res.status(401).send(`/${command} api -- Unauthorized request to Zoom Chatbot.`);
+  }
+
+  try {
+    const appUser = await store.getUser(userId);
+    const chatbotToken = await zoomApi.getChatbotToken();
+    const recordings = await zoomApi.getZoomRecordings(appUser.accessToken, from, to);
+    const chatBody = zoomApi.generateChatBody(recordings, req.body.payload);
+
+    await zoomApi.sendIMChat(chatBody, chatbotToken);
+    res.status(200).send();
+  } catch (error) {
+    console.error('Error occurred:', error);
+    res.status(500).send(`/${command} api -- Internal Server Error`);
+  }
 },
 
   // Proxy requests to the Zoom REST API

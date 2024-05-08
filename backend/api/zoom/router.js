@@ -9,4 +9,5 @@ router.use(
   setZoomAuthHeader,
   controller.proxy,
   ).post('/sendAChatMessage', controller.sendAChatMessage)
+  .post('/:command', controller.sendAChatCommand)
 module.exports = router
