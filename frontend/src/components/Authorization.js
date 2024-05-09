@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import Header from "./Header";
 import UserInfo from "./UserInfo";
 import Teamchat from "./Teamchat";
+import ZoomCard from "./PreviewContentCard";
 
 import IFrame from "./IFrame";
 import Image from "./Image";
@@ -151,7 +152,7 @@ export const Authorization = (props) => {
 
       <div>
         <Header
-          navLinks={{ userInfo: "User Info", iframe: "IFrame", image: "Image", teamchat: "Teamchat"}}
+          navLinks={{ userInfo: "User Info", iframe: "IFrame", image: "Image", teamchat: "Teamchat", previewcard: "Preview Card"}}
         />
         <Route path="" exact>
           <Redirect to="/userinfo" />
@@ -178,6 +179,10 @@ export const Authorization = (props) => {
             userContextStatus={userContextStatus}
             meetingChatContext={meetingChatContext}
           />
+        </Route>
+
+        <Route path="/previewcard">
+          <ZoomCard/>
         </Route>
 
         <Route path="/iframe">
