@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { apis } from "./apis";
 import { Authorization } from "./components/Authorization";
 import ApiScrollview from "./components/ApiScrollview";
+import ZoomCard from "./components/PreviewContentCard";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -218,15 +219,24 @@ function App() {
         }
       </p>
 
-      <ApiScrollview />
-      <Authorization
-        handleError={setError}
-        handleUserContextStatus={setUserContextStatus}
-        handleUser={setUser}
-        user={user}
-        userContextStatus={userContextStatus}
-        meetingChatContext={meetingChatContext}
-      />
+      {runningContext === 'inChat' ? (
+      // If in chat, render only the ZoomCard
+      <ZoomCard />
+    ) : (
+      // If not in chat, render both Authorization and ApiScrollview
+      <>
+        <ApiScrollview />
+        <Authorization
+          handleError={setError}
+          handleUserContextStatus={setUserContextStatus}
+          handleUser={setUser}
+          user={user}
+          userContextStatus={userContextStatus}
+          meetingChatContext={meetingChatContext}
+        />
+        
+      </>
+    )}
 
     </div>
   );

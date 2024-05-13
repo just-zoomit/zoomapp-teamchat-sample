@@ -118,6 +118,7 @@ function generateChatBody(recordings, payload) {
     user_jid: payload.userJid,
     account_id: payload.accountId,
     visible_to_user: true,
+ 
     content: {
       head: {
         text: 'Your recordings:',
@@ -154,7 +155,6 @@ async function sendIMChat(chatBody, chatbotToken) {
     throw new Error('Error sending chat');
   }
 }
-
 // Add this
 const getZoomRecordings = async (accessToken, from, to) => {
 

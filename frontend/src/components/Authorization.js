@@ -152,7 +152,7 @@ export const Authorization = (props) => {
 
       <div>
         <Header
-          navLinks={{ userInfo: "User Info", iframe: "IFrame", image: "Image", teamchat: "Teamchat", previewcard: "Preview Card"}}
+          navLinks={{ userInfo: "User Info", iframe: "IFrame", image: "Image", teamchat: "Teamchat", previewcard: "Preview Card" }}
         />
         <Route path="" exact>
           <Redirect to="/userinfo" />
@@ -174,7 +174,7 @@ export const Authorization = (props) => {
         </Route>
 
         <Route path="/teamchat">
-          <Teamchat 
+          <Teamchat
             user={user}
             userContextStatus={userContextStatus}
             meetingChatContext={meetingChatContext}
@@ -182,7 +182,7 @@ export const Authorization = (props) => {
         </Route>
 
         <Route path="/previewcard">
-          <ZoomCard/>
+          <ZoomCard />
         </Route>
 
         <Route path="/iframe">
@@ -190,7 +190,7 @@ export const Authorization = (props) => {
         </Route>
       </div>
 
-  
+
     </>
   );
 };

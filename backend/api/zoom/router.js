@@ -1,7 +1,7 @@
 const { Router } = require('express')
 const router = Router()
-const controller = require('./controller')
-const { getUser, refreshToken, setZoomAuthHeader} = require('./middleware')
+const controller = require('./controllers/controller')
+const { getUser, refreshToken, setZoomAuthHeader } = require('./middleware')
 router.use(
   '/api',
   getUser,
@@ -11,5 +11,6 @@ router.use(
   .post('/sign', controller.sign)
   .post('/sendAChatMessage', controller.sendAChatMessage)
   .post('/:command', controller.sendAChatCommand)
-  
+  .post('/command', controller.sendAChatCommand)
+
 module.exports = router
