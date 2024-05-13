@@ -25,19 +25,7 @@ const Teamchat = (props) => {
     }, 2000); // Hide the notification after 2 seconds
   };
 
-  const handleSendTeamChat = () => {
-    // Send message to backend
-    console.log("Sending message:", message);
-
-    fetchChatCommandMessage(message, meetingChatContext);
-
-    setMessage(""); // Clear input field
-    setShowNotification(true);
-    setTimeout(() => {
-      setShowNotification(false);
-    }, 2000); // Hide the notification after 2 seconds
-  };
-
+  
 
   const fetchUserMessage = async (message, meetingChatContext) => {
     try {
@@ -84,43 +72,7 @@ const Teamchat = (props) => {
     }
   };
 
-  const fetchChatCommandMessage = async (message, meetingChatContext) => {
-    try {
-      const data = {
-        "at_items": [
-          {
-            "at_contact": "donte.small@zoom.us",
-            "at_type": 1,
-            "end_position": 8,
-            "start_position": 0
-          }
-        ],
-        "message": message,
-        "file_ids": [""],
-        "reply_main_message_id": "",
-        "to_channel": meetingChatContext,
-        "to_contact": ""
-      };
-
-      const response = await fetch("/zoom/:command", {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      console.log("Response from Zoom REST API", response);
-
-      if (!response.ok) throw new Error("Failed to fetch user message");
-
-      const responseData = await response.json();
-      console.log("User message response:", responseData);
-    } catch (error) {
-      console.error("Error fetching user message:", error);
-    }
-  };
-
+  
 
   return (
     <div className="Teamchat-sample">
@@ -142,11 +94,7 @@ const Teamchat = (props) => {
         </Button>
       </div>
 
-      <div className="button-container">
-        <Button variant="primary" onClick={handleSendTeamChat}>
-          Handle Send TeamChat
-        </Button>
-      </div>
+     
       
       <div className="chat-container">
         <Form.Control

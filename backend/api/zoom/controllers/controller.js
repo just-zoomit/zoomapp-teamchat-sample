@@ -144,6 +144,31 @@ module.exports = {
       res.status(500).send(`/${command} api -- Internal Server Error`);
     }
   },
+  // Add this
+  async sendUnfurlChatMessage(req, res, next)  {
+  console.log('SEND A UNFURL MESSAGE COMMAND HANDLER');
+
+  console.log('Unfrul Request payload:', req.body);
+
+  try {
+
+    const chatbotToken = await zoomApi.getChatbotToken();
+    console.log('Chatbot Token:', chatbotToken);
+
+    const customMessage = zoomApi.createCustomZoomMessage(req.body.payload, {
+      headText: "Updated Attendance Form",
+      firstName: "Alice",
+      lastName: "Johnson"
+    });
+
+    await zoomApi.sendUnfurlChat(customMessage, chatbotToken); // Corrected function name
+
+    res.status(200).send();
+  } catch (error) {
+    console.error('Error occurred:', error);
+    res.status(500).send(`Internal Server Error`);
+  }
+},
   // Proxy requests to the Zoom REST API
   proxy: createProxyMiddleware({
     target: process.env.ZOOM_HOST,

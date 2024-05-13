@@ -98,7 +98,7 @@ const getDeeplink = async (accessToken) => {
 }
 
 // Add this
-const sendAChatMessage  = async (accessToken,data) => {
+const sendAChatMessage = async (accessToken, data) => {
 
   return await axios({
     url: `${process.env.ZOOM_HOST}/v2/chat/users/me/messages`,
@@ -107,7 +107,7 @@ const sendAChatMessage  = async (accessToken,data) => {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${accessToken}`
     },
-    data:data
+    data: data
   })
 }
 // Add this
@@ -118,7 +118,6 @@ function generateChatBody(recordings, payload) {
     user_jid: payload.userJid,
     account_id: payload.accountId,
     visible_to_user: true,
- 
     content: {
       head: {
         text: 'Your recordings:',
@@ -155,6 +154,7 @@ async function sendIMChat(chatBody, chatbotToken) {
     throw new Error('Error sending chat');
   }
 }
+
 // Add this
 const getZoomRecordings = async (accessToken, from, to) => {
 
@@ -177,6 +177,145 @@ const getZoomRecordings = async (accessToken, from, to) => {
   }
 }
 
+// Add this
+const createCustomZoomMessage = async (payload, options = {}) => {
+  // Set default values and override with any provided values
+  const {
+    formEnabled = true,
+    headText = "Attendance Form",
+    subHeadText = "Please fill out today's attendance form",
+    firstName = " ",
+    lastName = " ",
+    course = "Workforce Development",
+    messageText = "Please fill out the form",
+    messageBold = true,
+    datepickerInitialDate = "2024/5/10",
+    actionId = "datepicker123",
+    dividerStyle = { bold: false, dotted: false, color: "#98a0a9" },
+    submitButtonText = "Submit",
+    submitButtonValue = "submit",
+    submitButtonStyle = "Primary",
+    submitButtonIsSubmit = true
+  } = options;
+
+  const chatBody = {
+    operatorId: payload.operator_id,
+    triggerId: payload.object.trigger_id,
+    content: {
+      head: {
+        text: headText,
+        sub_head: {
+          text: subHeadText
+        }
+      }
+    }
+  };
+
+  const chatBodyx = {
+
+    operatorId: payload.operator_id,
+    triggerId: payload.object.trigger_id,
+    content: {
+      settings: {
+        form: formEnabled
+      },
+      head: {
+        text: headText,
+        sub_head: {
+          text: subHeadText
+        }
+      },
+      body: [
+        {
+          type: "fields",
+          items: [
+            {
+              key: "First Name",
+              value: firstName,
+              editable: true
+            },
+            {
+              key: "Last Name",
+              value: lastName,
+              editable: true
+            },
+            {
+              key: "Course",
+              value: course,
+              editable: true
+            }
+          ]
+        },
+        {
+          type: "message",
+          text: messageText,
+          style: {
+            bold: messageBold
+          }
+        },
+        {
+          type: "datepicker",
+          initial_date: datepickerInitialDate,
+          action_id: actionId
+        },
+        {
+          type: "divider",
+          style: dividerStyle
+        },
+        {
+          type: "actions",
+          items: [
+            {
+              text: submitButtonText,
+              value: submitButtonValue,
+              style: submitButtonStyle,
+              submit: submitButtonIsSubmit
+            }
+          ]
+        }
+      ]
+    }
+  }
+
+
+  // Build the JSON message structure
+  return chatBody;
+}
+// Attaching card to the chat message
+async function sendUnfurlChat(chatBody, chatbotToken) {
+  const { operatorId, triggerId, content } = await chatBody;
+
+  console.log('Content Not Working: ', content);
+
+
+  const unfurlData = JSON.stringify({
+    "content": {
+      "head": {
+        "text": "Unfurl Message",
+        "sub_head": {
+          "text": "Easily Unfurl links with your Marketplace Team Chat app! When you share a link from an approved domain, it automatically generates a preview of the linked content. This is super handy for sharing links during continuous meetings or in Team Chat channels."
+        }
+      }
+    }
+  });
+  console.log('sendUnfurlChat Expected Output: ',  unfurlData );
+
+  const response = await axios({
+    url: `https://api.zoom.us/v2/im/chat/users/${operatorId}/unfurls/${triggerId}`,
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${chatbotToken}`
+    },
+    data: unfurlData 
+  });
+
+  
+  if (response.status >= 400) {
+    throw new Error('Error sending chat');
+  }
+}
+
 
 module.exports = {
   getZoomAccessToken,
@@ -185,7 +324,9 @@ module.exports = {
   getZoomUser,
   getDeeplink,
   sendAChatMessage,
-  getZoomRecordings, 
+  getZoomRecordings,
   sendIMChat,
-  generateChatBody
+  generateChatBody,
+  createCustomZoomMessage,
+  sendUnfurlChat
 }

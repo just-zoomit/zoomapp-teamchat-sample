@@ -57,7 +57,7 @@ const ZoomCard = () => {
       await zoomSdk.composeCard(card);
       
        //await zoomSdk.closeApp();
-      // window.close();
+      window.close();
       // Redirect instead of closing the window
       //window.location.href = '/success'; // Redirect to a success page or any other appropriate location
 

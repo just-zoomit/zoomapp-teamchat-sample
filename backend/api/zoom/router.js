@@ -1,6 +1,7 @@
 const { Router } = require('express')
 const router = Router()
 const controller = require('./controllers/controller')
+const webhookController = require('./controllers/webhookController')
 const { getUser, refreshToken, setZoomAuthHeader } = require('./middleware')
 router.use(
   '/api',
@@ -10,7 +11,6 @@ router.use(
   controller.proxy,)
   .post('/sign', controller.sign)
   .post('/sendAChatMessage', controller.sendAChatMessage)
-  .post('/:command', controller.sendAChatCommand)
-  .post('/command', controller.sendAChatCommand)
+  .post('/command', webhookController.handleWebhook)
 
 module.exports = router
