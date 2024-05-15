@@ -4,9 +4,12 @@ import { useCallback, useEffect, useState } from "react";
 import { apis } from "./apis";
 import { Authorization } from "./components/Authorization";
 import ApiScrollview from "./components/ApiScrollview";
-import ZoomCard from "./components/PreviewContentCard";
+import ZoomCard from "./components/teamchat-components/PreviewContentCard";
 import "./App.css";
+
 import "bootstrap/dist/css/bootstrap.min.css";
+import "quill/dist/quill.snow.css";// for snow theme
+
 
 let once = 0; // to prevent increasing number of event listeners being added
 
@@ -41,25 +44,31 @@ function App() {
             "onSendAppInvitation",
             "onShareApp",
             "onActiveSpeakerChange",
-            "onMeeting",
+            "onMeeting", // Collaborative Apps
 
             // connect api and event
-            "connect",
-            "onConnect",
-            "postMessage",
-            "onMessage",
+            "connect", // Collaborative Apps
+            "onConnect", // Collaborative Apps
+            "postMessage", // Collaborative Apps
+            "onMessage", // Collaborative Apps
 
             // in-client api and event
             "authorize",
             "onAuthorized",
             "promptAuthorize",
             "composeCard", // Add this
-            "getUserContext",
+            "getUserContext", // Collaborative Apps
             "onMyUserContextChange",
             "getChatContext", // Add this
             "getMeetingChatContext", // Add this
             "sendAppInvitationToAllParticipants",
             "sendAppInvitation",
+
+            'getMeetingUUID', // Add this for Collaborative Apps
+            'getRunningContext', // Add this for Collaborative Apps
+            'onMeeting', // Add this for Collaborative Apps
+            'onParticipantChange', //Add this for Collaborative Apps
+            'onCollaborateChange', // Add this for Collaborative Apps
           ],
           version: "0.16.0",
         });

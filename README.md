@@ -113,6 +113,12 @@ Follow these instructions for the "Development" section
     - `setVideoMirrorEffect`
     - `setVirtualBackground`
     - `showNotification`
+    - `onParticipantChange`, //Add this for Collaborative Apps
+    - `startCollaborate`, //Add this for Collaborative Apps
+    - `endCollaborate`, //Add this for Collaborative Apps
+    - `leaveCollaborate`, //Add this for Collaborative Apps
+    - `joinCollaborate`, //Add this for Collaborative Apps
+    - `onCollaborateChange`, //Add this for Collaborative Apps
   - Users will be asked to consent to these scopes during the add flow before being allowed to use the Zoom App
   - Important: The added or checked items must at least include those in the "capabilities" list in the call to zoomSdk.config in the embedded browser, eg frontend/src/App.js
 - Select any additional features you would like to enable, eg Guest mode, In-client OAuth, Collaborate mode, etc. For this app, have Guest mode, In-client OAuth, and Collaborate Mode turned on.

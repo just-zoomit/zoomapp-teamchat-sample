@@ -1,0 +1,21 @@
+/* SettingsPage.css */
+.settings-page {
+    display: flex;
+    justify-content: space-between; /* Positions children on opposite ends */
+    align-items: center; /* Aligns children vertically in the center */
+    padding: 20px; /* Adds padding around the container */
+
+}
+
+.level-left {
+    position: relative;
+    top: 10px;
+    left: 10px;
+}
+
+.level-right {
+    position: relative;
+    top: 10px;
+    right: 10px;
+}
+

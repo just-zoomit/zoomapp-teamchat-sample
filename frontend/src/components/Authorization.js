@@ -1,16 +1,22 @@
 /* globals zoomSdk */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Route, Redirect, useLocation } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Header from "./Header";
 import UserInfo from "./UserInfo";
-import Teamchat from "./Teamchat";
-import ZoomCard from "./PreviewContentCard";
 
 import IFrame from "./IFrame";
 import Image from "./Image";
 
+import Teamchat from "./teamchat-components/Teamchat";
+import ZoomCard from "./teamchat-components/PreviewContentCard";
+
+import ZoomAppEditor from "./teamchat-components/QuillZoomAppEditor";
+
 export const Authorization = (props) => {
+
+
+
   const {
     handleError,
     handleUser,
@@ -152,7 +158,7 @@ export const Authorization = (props) => {
 
       <div>
         <Header
-          navLinks={{ userInfo: "User Info", iframe: "IFrame", image: "Image", teamchat: "Teamchat", previewcard: "Preview Card" }}
+          navLinks={{ userInfo: "User Info", iframe: "IFrame", image: "Image", teamchat: "Teamchat", previewcard: "Preview Card", editor: "Editor" }}
         />
         <Route path="" exact>
           <Redirect to="/userinfo" />
@@ -179,10 +185,19 @@ export const Authorization = (props) => {
             userContextStatus={userContextStatus}
             meetingChatContext={meetingChatContext}
           />
+
+
+
         </Route>
 
         <Route path="/previewcard">
           <ZoomCard />
+        </Route>
+
+        <Route path="/editor">
+          
+
+          <ZoomAppEditor />
         </Route>
 
         <Route path="/iframe">

@@ -1,3 +1,4 @@
+/* globals zoomSdk */
 import React, { useState, useEffect } from 'react';
 
 const ZoomCard = () => {
@@ -48,19 +49,18 @@ const ZoomCard = () => {
         })
       };
     
-
+      // eslint-disable-next-line no-undef
       const chatCtx = await zoomSdk.getChatContext(); // Get chat context
       setChatContext(chatCtx); // Set chat context state
 
       console.log("Creating card with content: ", chatCtx);
-
+     
+      // eslint-disable-next-line no-undef
       await zoomSdk.composeCard(card);
       
        //await zoomSdk.closeApp();
       window.close();
-      // Redirect instead of closing the window
-      //window.location.href = '/success'; // Redirect to a success page or any other appropriate location
-
+     
       console.log("Card created successfully");
     } catch (e) {
       console.error("Error when creating preview card ", e);
