@@ -88,23 +88,20 @@ const Teamchat = (props) => {
           ? `User Context Status: ${userContextStatus}`
           : "Configuring Zoom JavaScript SDK..."}
       </p>
-      <div className="button-container">
-        <Button variant="primary" onClick={handleSend}>
-          Send
-        </Button>
-      </div>
-
-     
       
-      <div className="chat-container">
-        <Form.Control
-          as="textarea"
-          rows={3}
-          value={message}
-          onChange={handleMessageChange}
-          placeholder="Type your message here..."
-        />
-      </div>
+      <div className="chat-input-container">
+      <Form.Control
+        as="textarea"
+        rows={3}
+        value={message}
+        onChange={handleMessageChange}
+        placeholder="Type your message here..."
+        className="chat-input"
+      />
+      <Button variant="primary" onClick={handleSend} className="send-button">
+        Send
+      </Button>
+    </div>
      
       {showNotification && (
         <div className="notification">Message sent!</div>
