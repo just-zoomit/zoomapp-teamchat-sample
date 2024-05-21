@@ -1,8 +1,9 @@
 .Teamchat-sample {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-  }
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+ 
+}
 
   .chat-input-container {
     display: flex;
@@ -34,10 +35,6 @@
     box-shadow: none;
     outline: none;
   }
- 
-  
- 
-  
 
   .notification {
     background-color: #f8d7da;

@@ -36,20 +36,22 @@ const getChatbotToken = async () => {
   try {
     const response = await axios.post('https://api.zoom.us/oauth/token', null, {
       headers: {
-        'Authorization': `Basic ${Buffer.from(`${process.env.ZOOM_APP_CLIENT_ID}:${process.env.ZOOM_APP_CLIENT_SECRET}`).toString('base64')}`
+        Authorization: `Basic ${Buffer.from(
+          `${process.env.ZOOM_APP_CLIENT_ID}:${process.env.ZOOM_APP_CLIENT_SECRET}`
+        ).toString('base64')}`,
       },
       params: {
-        grant_type: 'client_credentials'
-      }
-    });
+        grant_type: 'client_credentials',
+      },
+    })
 
     if (response.status !== 200) {
-      throw new Error('Error getting chatbot_token from Zoom');
+      throw new Error('Error getting chatbot_token from Zoom')
     }
 
-    return response.data.access_token;
+    return response.data.access_token
   } catch (error) {
-    throw new Error('Error getting chatbot_token from Zoom');
+    throw new Error('Error getting chatbot_token from Zoom')
   }
 }
 
@@ -96,18 +98,30 @@ const getDeeplink = async (accessToken) => {
     },
   })
 }
+// Add this
+const listUserChatChannels = async (accessToken) => {
+  return await axios({
+    url: `${process.env.ZOOM_HOST}/v2/chat/users/me/channels`,
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  })
+}
 
 // Add this
 const sendAChatMessage = async (accessToken, data) => {
+  console.log('Sending chat message:', data)
 
   return await axios({
     url: `${process.env.ZOOM_HOST}/v2/chat/users/me/messages`,
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`
+      Authorization: `Bearer ${accessToken}`,
     },
-    data: data
+    data: data,
   })
 }
 // Add this
@@ -122,19 +136,19 @@ function generateChatBody(recordings, payload) {
       head: {
         text: 'Your recordings:',
         sub_head: {
-          text: `Sent by ${payload.userName}`
-        }
+          text: `Sent by ${payload.userName}`,
+        },
       },
-      body: recordings.meetings.flatMap(meeting => [
+      body: recordings.meetings.flatMap((meeting) => [
         { type: 'message', text: `Meeting ID: ${meeting.id}` },
         { type: 'message', text: `Meeting UUID: ${meeting.uuid}` },
         { type: 'message', text: `Start Time: ${meeting.start_time}` },
-        { type: 'message', text: meeting.topic, link: meeting.share_url }
-      ])
-    }
-  };
+        { type: 'message', text: meeting.topic, link: meeting.share_url },
+      ]),
+    },
+  }
 
-  return chatBody;
+  return chatBody
 }
 
 // Add this
@@ -144,36 +158,35 @@ async function sendIMChat(chatBody, chatbotToken) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${chatbotToken}`
+      Authorization: `Bearer ${chatbotToken}`,
     },
-    data: chatBody
-  });
+    data: chatBody,
+  })
 
-  console.log('send chat response status', response.status);
+  console.log('send chat response status', response.status)
   if (response.status >= 400) {
-    throw new Error('Error sending chat');
+    throw new Error('Error sending chat')
   }
 }
 
 // Add this
 const getZoomRecordings = async (accessToken, from, to) => {
-
   try {
     const response = await axios({
       url: `${process.env.ZOOM_HOST}/v2/users/me/recordings?from=${from}&to=${to}`,
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`
-      }
-    });
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
 
     // Return just the data part of the response
-    return response.data;
+    return response.data
   } catch (error) {
-    console.error('Failed to fetch Zoom recordings:', error);
+    console.error('Failed to fetch Zoom recordings:', error)
     // Handle errors, possibly re-throwing them or returning a default
-    throw error; // Re-throwing the error for the caller to handle
+    throw error // Re-throwing the error for the caller to handle
   }
 }
 
@@ -182,21 +195,21 @@ const createCustomZoomMessage = async (payload, options = {}) => {
   // Set default values and override with any provided values
   const {
     formEnabled = true,
-    headText = "Attendance Form",
+    headText = 'Attendance Form',
     subHeadText = "Please fill out today's attendance form",
-    firstName = " ",
-    lastName = " ",
-    course = "Workforce Development",
-    messageText = "Please fill out the form",
+    firstName = ' ',
+    lastName = ' ',
+    course = 'Workforce Development',
+    messageText = 'Please fill out the form',
     messageBold = true,
-    datepickerInitialDate = "2024/5/10",
-    actionId = "datepicker123",
-    dividerStyle = { bold: false, dotted: false, color: "#98a0a9" },
-    submitButtonText = "Submit",
-    submitButtonValue = "submit",
-    submitButtonStyle = "Primary",
-    submitButtonIsSubmit = true
-  } = options;
+    datepickerInitialDate = '2024/5/10',
+    actionId = 'datepicker123',
+    dividerStyle = { bold: false, dotted: false, color: '#98a0a9' },
+    submitButtonText = 'Submit',
+    submitButtonValue = 'submit',
+    submitButtonStyle = 'Primary',
+    submitButtonIsSubmit = true,
+  } = options
 
   const chatBody = {
     operatorId: payload.operator_id,
@@ -205,117 +218,112 @@ const createCustomZoomMessage = async (payload, options = {}) => {
       head: {
         text: headText,
         sub_head: {
-          text: subHeadText
-        }
-      }
-    }
-  };
+          text: subHeadText,
+        },
+      },
+    },
+  }
 
   const chatBodyx = {
-
     operatorId: payload.operator_id,
     triggerId: payload.object.trigger_id,
     content: {
       settings: {
-        form: formEnabled
+        form: formEnabled,
       },
       head: {
         text: headText,
         sub_head: {
-          text: subHeadText
-        }
+          text: subHeadText,
+        },
       },
       body: [
         {
-          type: "fields",
+          type: 'fields',
           items: [
             {
-              key: "First Name",
+              key: 'First Name',
               value: firstName,
-              editable: true
+              editable: true,
             },
             {
-              key: "Last Name",
+              key: 'Last Name',
               value: lastName,
-              editable: true
+              editable: true,
             },
             {
-              key: "Course",
+              key: 'Course',
               value: course,
-              editable: true
-            }
-          ]
+              editable: true,
+            },
+          ],
         },
         {
-          type: "message",
+          type: 'message',
           text: messageText,
           style: {
-            bold: messageBold
-          }
+            bold: messageBold,
+          },
         },
         {
-          type: "datepicker",
+          type: 'datepicker',
           initial_date: datepickerInitialDate,
-          action_id: actionId
+          action_id: actionId,
         },
         {
-          type: "divider",
-          style: dividerStyle
+          type: 'divider',
+          style: dividerStyle,
         },
         {
-          type: "actions",
+          type: 'actions',
           items: [
             {
               text: submitButtonText,
               value: submitButtonValue,
               style: submitButtonStyle,
-              submit: submitButtonIsSubmit
-            }
-          ]
-        }
-      ]
-    }
+              submit: submitButtonIsSubmit,
+            },
+          ],
+        },
+      ],
+    },
   }
 
-
   // Build the JSON message structure
-  return chatBody;
+  return chatBody
 }
 // Attaching card to the chat message
 async function sendUnfurlChat(chatBody, chatbotToken) {
-  const { operatorId, triggerId, content } = await chatBody;
+  const { operatorId, triggerId, content } = await chatBody
 
-  console.log('Content Not Working: ', content);
-
+  console.log('Content Not Working: ', content)
 
   const unfurlData = JSON.stringify({
-    "content": {
-      "head": {
-        "text": "Unfurl Message",
-        "sub_head": {
-          "text": "Easily Unfurl links with your Marketplace Team Chat app! When you share a link from an approved domain, it automatically generates a preview of the linked content. This is super handy for sharing links during continuous meetings or in Team Chat channels."
-        }
-      }
-    }
-  });
-  console.log('sendUnfurlChat Expected Output: ',  unfurlData );
+    content: {
+      head: {
+        text: 'Unfurl Message',
+        sub_head: {
+          text: 'Easily Unfurl links with your Marketplace Team Chat app! When you share a link from an approved domain, it automatically generates a preview of the linked content. This is super handy for sharing links during continuous meetings or in Team Chat channels.',
+        },
+      },
+    },
+  })
+  console.log('sendUnfurlChat Expected Output: ', unfurlData)
 
   const response = await axios({
     url: `https://api.zoom.us/v2/im/chat/users/${operatorId}/unfurls/${triggerId}`,
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${chatbotToken}`
+      Authorization: `Bearer ${chatbotToken}`,
     },
-    data: unfurlData 
-  });
+    data: unfurlData,
+  })
 
-  
   if (response.status >= 400) {
-    throw new Error('Error sending chat');
+    throw new Error('Error sending chat')
   }
 }
-
 
 module.exports = {
   getZoomAccessToken,
@@ -328,5 +336,6 @@ module.exports = {
   sendIMChat,
   generateChatBody,
   createCustomZoomMessage,
-  sendUnfurlChat
+  sendUnfurlChat,
+  listUserChatChannels,
 }

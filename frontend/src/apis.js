@@ -139,7 +139,6 @@ const apis = [
   {
     name: 'getChatContext' // Add this
   },
-  ,
   {
     name: 'composeCard' // Add this
   }

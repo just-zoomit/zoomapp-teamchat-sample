@@ -13,7 +13,7 @@ const SettingsPage = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [showNotification, setShowNotification] = useState(false);
 
-    const role = ""; // Assuming role is obtained elsewhere or set here
+    const role = ""; 
     const isHost = role === 'host';
 
     const startTxt = `${isCollaborating ? 'End' : 'Start'} Collaboration`;

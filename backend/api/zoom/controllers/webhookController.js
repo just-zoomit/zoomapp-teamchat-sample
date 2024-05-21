@@ -6,12 +6,11 @@ const store = require('../../../util/store')
 const controller = require('./controller')
 
 module.exports = {
-
   async handleWebhook(req, res, next) {
     const { event, data } = req.body;
 
     console.log('Webhook Event:', req.body);
-   
+
     if (!req.body) {
       return res.status(200).send();
     }
@@ -20,23 +19,19 @@ module.exports = {
     }
     const userId = req.body.userId;
 
-
     try {
-       
-
       switch (event) {
         case 'bot_installed':
           // Handle new subscription
           return res.status(200).json({ message: 'Subscription added successfully' });
         case 'bot_notification':
-          
-          return controller.sendAChatCommand(req, res, next);
-        case 'chat_message.card_shared': 
+          return controller.sendAChatCommand(req, res, next)
+        case 'chat_message.card_shared':
           // Handle payment success
           return res.status(200).json({ message: 'Payment processed successfully' });
         case 'team_chat.link_shared':
           console.log('team_chat.link_shared event received!');
-          
+
           return controller.sendUnfurlChatMessage(req, res, next)
         case 'interactive_message_select':
           // Handle new subscription

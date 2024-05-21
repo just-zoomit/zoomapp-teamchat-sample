@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { apis } from "./apis";
 import { Authorization } from "./components/Authorization";
 import ApiScrollview from "./components/ApiScrollview";
-import ZoomCard from "./components/teamchat-components/PreviewContentCard";
+import ZoomCard from "./components/Teamchat/PreviewContentCard";
 import "./App.css";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -152,8 +152,20 @@ function App() {
           
           if((runningContext ===  "inImmersive" || "inCollaborate" || "inCamera"|| "inWebinar") ){
           zoomSdk.getMeetingChatContext().then((chatContext) => {
-            console.log("Meeting Chat Context: ", chatContext.chatChannelUUID);
-            setMeetingChatContext(chatContext.chatChannelUUID);
+          
+
+            // if the meeting chat context is not set, list all chat channels and prompt user to select one
+            if (!chatContext.chatChannelUUID) {
+              // If not chat channel, then 
+              zoomSdk.getChatContext().then((chatContext) => {
+                console.log("Chat Context: ", chatContext);
+                setMeetingChatContext(chatContext.chatChannelUUID);
+              });
+            } else {
+              setMeetingChatContext(chatContext.chatChannelUUID);
+            }
+
+          
           });
         }
 
@@ -228,11 +240,7 @@ function App() {
         }
       </p>
 
-      {runningContext === 'inChat' ? (
-      // If in chat, render only the ZoomCard
-      <ZoomCard />
-    ) : (
-      // If not in chat, render both Authorization and ApiScrollview
+      {runningContext !== 'inChat' ? (
       <>
         <ApiScrollview />
         <Authorization
@@ -243,8 +251,9 @@ function App() {
           userContextStatus={userContextStatus}
           meetingChatContext={meetingChatContext}
         />
-        
       </>
+    ) : (
+      <ZoomCard />
     )}
 
     </div>

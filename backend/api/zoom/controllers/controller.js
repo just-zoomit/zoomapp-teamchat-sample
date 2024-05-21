@@ -38,12 +38,45 @@ module.exports = {
       res.status(500).json({ error: 'Internal server error' });
     }
   },
+   // Send a Chat Message
+   async getUserChatChannels(req, res, next) {
+    try {
+      console.log(
+        'GET USERS CHAT CHANNELS ==========================================================',
+        '\n'
+      )
+
+      const users = req?.session?.user
+
+      if (!users) {
+        return next(
+          new Error(
+            'No session or no user. You may need to close and reload or reinstall the application'
+          )
+        )
+      }
+
+      const appUser = await store.getUser(users)
+      req.appUser = appUser
+
+      const response = await zoomApi.listUserChatChannels(appUser.accessToken)
+
+      const channels = response.data.channels
+
+      res.json({channels});
+      
+    } catch (error) {
+      return next(new Error('Error listing chat message ', error))
+    }
+  }
+
+  ,
 
   // Send a Chat Message
   async sendAChatMessage(req, res, next) {
     try {
       console.log('SEND A CHAT MESSAGE HANDLER ==========================================================', '\n')
-
+      console.log('Request payload:', req.body)
 
       const users = req?.session?.user
 
@@ -53,6 +86,7 @@ module.exports = {
 
       const appUser = await store.getUser(users)
       req.appUser = appUser
+      console.log('App User:', appUser)
 
       const response = await zoomApi.sendAChatMessage(appUser.accessToken, req.body)
 
@@ -146,15 +180,10 @@ module.exports = {
   },
   // Add this
   async sendUnfurlChatMessage(req, res, next)  {
-  console.log('SEND A UNFURL MESSAGE COMMAND HANDLER');
-
-  console.log('Unfrul Request payload:', req.body);
-
   try {
 
     const chatbotToken = await zoomApi.getChatbotToken();
-    console.log('Chatbot Token:', chatbotToken);
-
+  
     const customMessage = zoomApi.createCustomZoomMessage(req.body.payload, {
       headText: "Updated Attendance Form",
       firstName: "Alice",

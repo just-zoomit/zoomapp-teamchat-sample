@@ -8,14 +8,13 @@ import UserInfo from "./UserInfo";
 import IFrame from "./IFrame";
 import Image from "./Image";
 
-import Teamchat from "./teamchat-components/Teamchat";
-import ZoomCard from "./teamchat-components/PreviewContentCard";
+import ChatApp from "./Teamchat/ChatApp";
 
-import ZoomAppEditor from "./teamchat-components/QuillZoomAppEditor";
+import ZoomCard from "./Teamchat/PreviewContentCard";
+
+import ZoomAppEditor from "./Teamchat/QuillZoomAppEditor";
 
 export const Authorization = (props) => {
-
-
 
   const {
     handleError,
@@ -119,7 +118,7 @@ export const Authorization = (props) => {
       try {
         // An example of using the Zoom REST API via proxy
         const response = await fetch("/zoom/api/v2/users/me");
-        console.log("Response from Zoom REST API", response);
+
         if (response.status !== 200) throw new Error();
         const user = await response.json();
         handleUser(user);
@@ -180,12 +179,13 @@ export const Authorization = (props) => {
         </Route>
 
         <Route path="/teamchat">
-          <Teamchat
+        <ChatApp
             user={user}
             userContextStatus={userContextStatus}
             meetingChatContext={meetingChatContext}
-          />
 
+
+          /> 
 
 
         </Route>
@@ -195,7 +195,6 @@ export const Authorization = (props) => {
         </Route>
 
         <Route path="/editor">
-          
 
           <ZoomAppEditor />
         </Route>

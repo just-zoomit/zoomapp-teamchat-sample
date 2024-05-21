@@ -4,8 +4,10 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
 const Teamchat = (props) => {
-  const { user, userContextStatus, meetingChatContext } = props;
+  const { meetingChatContext, selectedChannelId } = props;
   const [message, setMessage] = useState("");
+  
+  const [notificationMessage, setNotificationMessage] = useState("");
   const [showNotification, setShowNotification] = useState(false);
 
   const handleMessageChange = (e) => {
@@ -13,21 +15,30 @@ const Teamchat = (props) => {
   };
 
   const handleSend = () => {
-    // Send message to backend
-    console.log("Sending message:", message);
+    const context = meetingChatContext || selectedChannelId;
 
-    fetchUserMessage(message, meetingChatContext);
+    if (!context) {
+      setNotificationMessage("Please select a channel or start a meeting to use Team Chat!");
+      setShowNotification(true);
+      setTimeout(() => {
+        setShowNotification(false);
+      }, 2000); // Hide the notification after 2 seconds
+      return;
+    } else{
+    
+      setNotificationMessage("Message sent!");
 
+    fetchUserMessage(message, context);
     setMessage(""); // Clear input field
     setShowNotification(true);
     setTimeout(() => {
       setShowNotification(false);
     }, 2000); // Hide the notification after 2 seconds
+
+    }
   };
 
-  
-
-  const fetchUserMessage = async (message, meetingChatContext) => {
+  const fetchUserMessage = async (message, context) => {
     try {
       const data = {
         "at_items": [
@@ -49,7 +60,7 @@ const Teamchat = (props) => {
         "message": message,
         "file_ids": [""],
         "reply_main_message_id": "",
-        "to_channel": meetingChatContext,
+        "to_channel": context,
         "to_contact": ""
       };
 
@@ -61,50 +72,32 @@ const Teamchat = (props) => {
         },
       });
 
-      console.log("Response from Zoom REST API", response);
-
       if (!response.ok) throw new Error("Failed to fetch user message");
-
       const responseData = await response.json();
-      console.log("User message response:", responseData);
     } catch (error) {
       console.error("Error fetching user message:", error);
     }
   };
 
-  
-
   return (
     <div className="Teamchat-sample">
-     
-      <h2>Team Chat</h2>
-      <p>
-        {meetingChatContext
-          ? `Meeting Chat Context: ${meetingChatContext}`
-          : "Connecting to meeting..."}
-      </p>
-      <p>
-        {userContextStatus
-          ? `User Context Status: ${userContextStatus}`
-          : "Configuring Zoom JavaScript SDK..."}
-      </p>
-      
+    
       <div className="chat-input-container">
-      <Form.Control
-        as="textarea"
-        rows={3}
-        value={message}
-        onChange={handleMessageChange}
-        placeholder="Type your message here..."
-        className="chat-input"
-      />
-      <Button variant="primary" onClick={handleSend} className="send-button">
-        Send
-      </Button>
-    </div>
-     
+        <Form.Control
+          as="textarea"
+          rows={3}
+          value={message}
+          onChange={handleMessageChange}
+          placeholder="Type your message here..."
+          className="chat-input"
+        />
+        <Button variant="primary" onClick={handleSend} className="send-button">
+          Send
+        </Button>
+      </div>
+
       {showNotification && (
-        <div className="notification">Message sent!</div>
+        <div className="notification">{notificationMessage}</div>
       )}
     </div>
   );
