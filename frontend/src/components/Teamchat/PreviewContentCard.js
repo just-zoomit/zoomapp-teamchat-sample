@@ -57,6 +57,7 @@ const ZoomCard = () => {
       };
 
       const chatCtx = await zoomSdk.getChatContext();
+      console.log("Chat Context: ", chatCtx);
       setChatContext(chatCtx);
 
       await zoomSdk.composeCard(card);

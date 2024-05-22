@@ -5,6 +5,7 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { createHashHistory } from "history";
+import "./components/Teamchat/TextEditor.css";
 
 const history = createHashHistory();
 

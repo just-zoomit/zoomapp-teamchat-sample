@@ -3,9 +3,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Button from "react-bootstrap/Button";
 import './SettingsPage.css';  // Import the CSS file for styling
-
-// onCollaborateChange 
-// URL : https://appssdk.zoom.us/classes/ZoomSdk.ZoomSdk.html#onCollaborateChange
+import ShareButton from './ShareButton';
 
 const SettingsPage = () => {
     const history = useHistory();
@@ -67,27 +65,23 @@ const SettingsPage = () => {
 
     return (
         <div className='settings-page'>
-            <div className='level-left'>
+            <div className='button-grid'>
+                <Button onClick={handleStartClick} variant={isCollaborating ? "danger" : "primary"}>
+                    {startTxt}
+                </Button>
+
+                <Button onClick={handleJoinClick} variant={isCollaborating ? "warning" : "primary"}>
+                    {joinTxt}
+                </Button>
+
+                <ShareButton />
+
                 <Button onClick={goHome}>
                     <span className='icon is-small'>
                         <i className='fas fa-arrow-left'></i>
                     </span>
                     <span>Back</span>
                 </Button>
-            </div>
-
-            <br />
-
-            <div>
-                <div className='level-right'>
-                    <Button onClick={handleStartClick} variant={isCollaborating ? "danger" : "success"}>
-                        {startTxt}
-                    </Button>
-                    &nbsp;&nbsp;{/* Adding space between buttons */}
-                    <Button onClick={handleJoinClick} variant={isCollaborating ? "warning" : "info"}>
-                        {joinTxt}
-                    </Button>
-                </div>
             </div>
 
             {showNotification && (

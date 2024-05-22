@@ -1,6 +1,6 @@
 /* globals zoomSdk */
 import React, { useEffect, useRef, useState } from "react";
-import { Route, Redirect, useLocation } from "react-router-dom";
+import { Route, Redirect, Switch, useLocation } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Header from "./Header";
 import UserInfo from "./UserInfo";
@@ -13,6 +13,12 @@ import ChatApp from "./Teamchat/ChatApp";
 import ZoomCard from "./Teamchat/PreviewContentCard";
 
 import ZoomAppEditor from "./Teamchat/QuillZoomAppEditor";
+
+import TextEditor from "./Teamchat/TextEditor";
+
+import EditorRoutes from './Teamchat/EditorRoutes';
+
+import { v4 as uuidV4 } from "uuid"
 
 export const Authorization = (props) => {
 
@@ -144,6 +150,10 @@ export const Authorization = (props) => {
     }
   }, [handleUser, handleUserContextStatus, userAuthorized, userContextStatus]);
 
+   
+
+  const shouldHideHeader = location.pathname.startsWith('/editor');
+
   return (
     <>
       <p>You are on this route: {location.pathname}</p>
@@ -156,55 +166,46 @@ export const Authorization = (props) => {
       </Button>}
 
       <div>
-        <Header
-          navLinks={{ userInfo: "User Info", iframe: "IFrame", image: "Image", teamchat: "Teamchat", previewcard: "Preview Card", editor: "Editor" }}
-        />
-        <Route path="" exact>
-          <Redirect to="/userinfo" />
-        </Route>
-
-        <Route path="/userinfo">
-
-          <UserInfo
-            user={user}
-            onClick={inGuestMode ? promptAuthorize : authorize}
-            showGuestModePrompt={inGuestMode}
-            userContextStatus={userContextStatus}
-            showInClientOAuthPrompt={showInClientOAuthPrompt}
+        {!shouldHideHeader && (
+          <Header
+            navLinks={{ userInfo: "User Info", iframe: "IFrame", image: "Image", teamchat: "Teamchat", editor: "Editor" }}
           />
-        </Route>
+        )}
 
-        <Route path="/image">
-          <Image />
-        </Route>
+      
+          <Route path="/" exact>
+            <Redirect to="/userinfo" />
+          </Route>
 
-        <Route path="/teamchat">
-        <ChatApp
-            user={user}
-            userContextStatus={userContextStatus}
-            meetingChatContext={meetingChatContext}
+          <Route path="/userinfo" exact>
+            <UserInfo
+              user={user}
+              onClick={inGuestMode ? promptAuthorize : authorize}
+              showGuestModePrompt={inGuestMode}
+              userContextStatus={userContextStatus}
+              showInClientOAuthPrompt={showInClientOAuthPrompt}
+            />
+          </Route>
 
+          <Route path="/image" exact>
+            <Image />
+          </Route>
 
-          /> 
+          <Route path="/teamchat" exact>
+            <ChatApp
+              user={user}
+              userContextStatus={userContextStatus}
+              meetingChatContext={meetingChatContext}
+            />
+          </Route>
 
+          <Route path="/iframe" exact>
+            <IFrame />
+          </Route>
 
-        </Route>
-
-        <Route path="/previewcard">
-          <ZoomCard />
-        </Route>
-
-        <Route path="/editor">
-
-          <ZoomAppEditor />
-        </Route>
-
-        <Route path="/iframe">
-          <IFrame />
-        </Route>
+          <Route path="/editor" component={EditorRoutes} />
+       
       </div>
-
-
     </>
   );
 };

@@ -18,19 +18,20 @@
   .chat-input {
     flex-grow: 1;
     border: none;
-    padding-right: 4rem; /* Give space for the button */
-    resize: none; /* Optional: Prevents resizing */
+    padding-right: 4rem; 
+    resize: none; 
     height: 100px;
+    
   }
   
   .send-button {
     position: absolute;
-    right: 8px; /* Adjust based on your design */
-    bottom: 8px; /* Align with the bottom of the textarea */
+    right: 8px; 
+    bottom: 8px; 
     padding: 0.375rem 0.75rem;
   }
   
-  /* Additional styles to remove default browser styles */
+
   .chat-input:focus {
     box-shadow: none;
     outline: none;

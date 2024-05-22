@@ -36,6 +36,7 @@ const Teamchat = (props) => {
     }, 2000); // Hide the notification after 2 seconds
 
     }
+
   };
 
   const fetchUserMessage = async (message, context) => {
@@ -80,7 +81,7 @@ const Teamchat = (props) => {
   };
 
   return (
-    <div className="Teamchat-sample">
+    <div >
     
       <div className="chat-input-container">
         <Form.Control
@@ -94,13 +95,16 @@ const Teamchat = (props) => {
         <Button variant="primary" onClick={handleSend} className="send-button">
           Send
         </Button>
+        <br />
       </div>
 
       {showNotification && (
         <div className="notification">{notificationMessage}</div>
       )}
     </div>
+
   );
+
 };
 
 export default Teamchat;

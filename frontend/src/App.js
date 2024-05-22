@@ -7,6 +7,7 @@ import ApiScrollview from "./components/ApiScrollview";
 import ZoomCard from "./components/Teamchat/PreviewContentCard";
 import "./App.css";
 
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "quill/dist/quill.snow.css";// for snow theme
 
@@ -225,6 +226,10 @@ function App() {
 
   return (
     <div className="App">
+      
+
+      {runningContext !== 'inChat' ? (
+      <>
       <h1>Hello{user ? ` ${user.first_name} ${user.last_name}` : " Zoom Apps user"}!</h1>
       <p>{`User Context Status: ${userContextStatus}`}</p>
       <p>
@@ -239,9 +244,6 @@ function App() {
           "Connecting to meeting..."
         }
       </p>
-
-      {runningContext !== 'inChat' ? (
-      <>
         <ApiScrollview />
         <Authorization
           handleError={setError}

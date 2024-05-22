@@ -9,8 +9,8 @@ const ChatApp = (props) => {
 
   return (
     <Container fluid>
-      <Row>
-        <Col xs={3} className="p-3" style={{ backgroundColor: '#f8f9fa', height: '100vh' }}>
+      <Row style={{ height: '100vh' }}>
+        <Col xs={3} className="p-3" style={{ backgroundColor: '#f8f9fa', height: '75vh' }}>
           <div className="centered-div">
             <h1>Team Chat</h1>
           </div>
@@ -27,11 +27,13 @@ const ChatApp = (props) => {
           <ChatChannels onChannelSelect={setSelectedChannelId} />
         </Col>
 
-        <Col xs={9} className="d-flex flex-column p-3" style={{ height: '100vh' }}>
+        <Col xs={9} className="d-flex flex-column p-3" style={{ height: '75vh' }}>
           <div className="flex-grow-1" style={{ overflowY: 'auto' }}>
-          <Teamchat selectedChannelId={selectedChannelId} {...props} />
+            {/* Main chat area or other content can go here */}
           </div>
-          
+          <div className="Teamchat-sample">
+            <Teamchat selectedChannelId={selectedChannelId} {...props} />
+          </div>
         </Col>
       </Row>
     </Container>

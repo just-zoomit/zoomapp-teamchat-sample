@@ -1,10 +1,8 @@
-/* SettingsPage.css */
 .settings-page {
     display: flex;
-    justify-content: space-between; /* Positions children on opposite ends */
-    align-items: center; /* Aligns children vertically in the center */
-    padding: 20px; /* Adds padding around the container */
-
+    justify-content: flex-end; /* Align items to the right */
+    align-items: center;
+    padding: 20px;
 }
 
 .level-left {
@@ -14,8 +12,18 @@
 }
 
 .level-right {
-    position: relative;
-    top: 10px;
-    right: 10px;
+    display: flex;
+    justify-content: flex-end; /* Ensure buttons are aligned to the right */
+    flex-wrap: wrap; /* Allows buttons to wrap into multiple rows */
+    gap: 10px; /* Adjust the gap between the buttons as needed */
+    width: 100%; /* Ensure it takes full width for alignment */
 }
 
+.button-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 10px; /* Adjust the gap between the buttons as needed */
+    justify-items: center;
+    align-items: center;
+    width: fit-content; /* Fit the grid to its content */
+}

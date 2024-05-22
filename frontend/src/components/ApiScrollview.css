@@ -20,8 +20,8 @@
   overflow-x: hidden;
 }
 .api-channel-button {
-  margin-bottom: 10px; /* Add space between buttons vertically */
-  margin-right: 10px; /* Add space between buttons horizontally if they are on the same line */
+  margin-bottom: 10px;
+  margin-right: 10px; 
 }
 .api-button {
   min-width: 100%;
