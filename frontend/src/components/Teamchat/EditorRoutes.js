@@ -10,7 +10,7 @@ const EditorRoutes = () => {
         <Redirect to={`/editor/${uuidV4()}`} />
       </Route>
 
-      <Route path="/editor/:id" exact>
+      <Route path="/editor/:id" >
         <TextEditor />
       </Route>
     </Switch>
