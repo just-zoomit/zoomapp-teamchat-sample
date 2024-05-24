@@ -1,3 +1,4 @@
+/* Base styles */
 #api-scrollview-input {
   margin-top: 10px;
   margin-bottom: 10px;
@@ -19,10 +20,12 @@
   overflow-y: auto;
   overflow-x: hidden;
 }
+
 .api-channel-button {
   margin-bottom: 10px;
   margin-right: 10px; 
 }
+
 .api-button {
   min-width: 100%;
   max-height: 40px;
@@ -31,4 +34,32 @@
 .hr-scroll-border {
   width: 300px;
   margin-top: 2px;
+}
+
+/* Responsive styles for windows 1/3 screen width */
+@media (max-width: 33.33vw) {
+  .api-scrollview {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+
+  .api-buttons-list {
+    width: 100%;
+    height: auto; /* Adjust height to fit content on smaller screens */
+  }
+
+  .api-channel-button {
+    margin-bottom: 5px;
+    margin-right: 5px; 
+  }
+
+  .api-button {
+    min-width: 100%;
+    max-height: 40px;
+  }
+
+  .hr-scroll-border {
+    width: 100%;
+    margin-top: 2px;
+  }
 }

@@ -1,55 +1,81 @@
+/* Base styles */
 .Teamchat-sample {
   display: flex;
   flex-direction: column;
   justify-content: center;
- 
 }
 
-  .chat-input-container {
-    display: flex;
-    align-items: center;
-    position: relative;
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-   
-  }
-  
-  .chat-input {
-    flex-grow: 1;
-    border: none;
-    padding-right: 4rem; 
-    resize: none; 
-    height: 100px;
-    
-  }
-  
-  .send-button {
-    position: absolute;
-    right: 8px; 
-    bottom: 8px; 
-    padding: 0.375rem 0.75rem;
-  }
-  
+.chat-input-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
 
-  .chat-input:focus {
-    box-shadow: none;
-    outline: none;
+.chat-input {
+  flex-grow: 1;
+  border: none;
+  padding-right: 4rem;
+  resize: none;
+  height: 100px;
+}
+
+.send-button {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  padding: 0.375rem 0.75rem;
+}
+
+.chat-input:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+.notification {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 8px 16px;
+  border: 1px solid #f5c6cb;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+
+/* Adjust the chat input height and margin */
+.chat-container textarea {
+  height: 100px;
+  margin-bottom: 10px;
+}
+
+/* Responsive styles for windows 1/3 screen width */
+@media (max-width: 33.33vw) {
+  .chat-input-container {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.25rem;
+  }
+
+  .chat-input {
+    width: 100%;
+    height: 80px;
+    padding-right: 2rem;
+  }
+
+  .send-button {
+    position: static;
+    margin-top: 8px;
+    align-self: flex-end;
   }
 
   .notification {
-    background-color: #f8d7da;
-    color: #721c24;
-    padding: 8px 16px;
-    border: 1px solid #f5c6cb;
-    border-radius: 4px;
-    margin-top: 10px;
+    padding: 4px 8px;
+    margin-top: 5px;
   }
-  
-   /*  */
-  /* Adjust the chat input height and margin */
+
   .chat-container textarea {
-    height: 100px;
-    margin-bottom: 10px;
+    height: 80px;
+    margin-bottom: 5px;
   }
-  
+}

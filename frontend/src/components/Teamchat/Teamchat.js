@@ -74,7 +74,7 @@ const Teamchat = (props) => {
       });
 
       if (!response.ok) throw new Error("Failed to fetch user message");
-      const responseData = await response.json();
+      
     } catch (error) {
       console.error("Error fetching user message:", error);
     }

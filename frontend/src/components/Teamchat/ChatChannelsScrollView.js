@@ -73,7 +73,6 @@ function ChatChannels({ onChannelSelect }) {
             {selectedChannel && (
                 <div>
                     <h4>Selected Channel: {selectedChannel.name}</h4>
-                 
                 </div>
             )}
         </div>
