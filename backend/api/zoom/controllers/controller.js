@@ -88,7 +88,8 @@ module.exports = {
       req.appUser = appUser
       console.log('App User:', appUser)
 
-      const response = await zoomApi.sendAChatMessage(appUser.accessToken, req.body)
+      await zoomApi.sendAChatMessage(appUser.accessToken, req.body)
+      res.status(200).send();
 
     } catch (error) {
       return next(new Error('Error sending chat message ', error))
