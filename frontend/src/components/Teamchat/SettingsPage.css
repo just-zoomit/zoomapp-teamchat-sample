@@ -1,6 +1,6 @@
 .settings-page {
     display: flex;
-    justify-content: flex-end; /* Align items to the right */
+    justify-content: flex-end; 
     align-items: center;
     padding: 20px;
 }
@@ -13,17 +13,17 @@
 
 .level-right {
     display: flex;
-    justify-content: flex-end; /* Ensure buttons are aligned to the right */
-    flex-wrap: wrap; /* Allows buttons to wrap into multiple rows */
-    gap: 10px; /* Adjust the gap between the buttons as needed */
-    width: 100%; /* Ensure it takes full width for alignment */
+    justify-content: flex-end; 
+    flex-wrap: wrap; 
+    gap: 10px; 
+    width: 100%; 
 }
 
 .button-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-gap: 10px; /* Adjust the gap between the buttons as needed */
+    grid-gap: 10px; 
     justify-items: center;
     align-items: center;
-    width: fit-content; /* Fit the grid to its content */
+    width: fit-content;
 }

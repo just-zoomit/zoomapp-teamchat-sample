@@ -72,17 +72,23 @@ const ShareButton = () => {
     fetchChatChannels();
   }, []);
 
+
   const fetchChatChannels = async () => {
     try {
       const response = await fetch('/zoom/getChatChannels');
-      if (!response.ok) throw new Error('Network response was not ok');
+      
+      if (!response.ok) throw new Error(`Network response was not ok: ${response.statusText}`);
 
       const data = await response.json();
+      
+      if (!data.channels) throw new Error('Channels data is missing');
+
       setChannels(data.channels);
+      
     } catch (error) {
       console.error("Error fetching chat channels:", error);
     }
-  };
+};
 
   const handleModalShow = () => setShowModal(true);
   const handleModalClose = () => setShowModal(false);
@@ -107,7 +113,7 @@ const ShareButton = () => {
     }
 
     try {
-    // breaks when await sendMessage is called
+    
       await sendMessage(message, selectedChannel.id);
       clearMessageAndCloseModal();
     } catch (error) {

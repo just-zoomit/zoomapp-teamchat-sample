@@ -1,6 +1,6 @@
 /* globals zoomSdk */
-import React, { useEffect, useRef, useState } from "react";
-import { Route, Redirect, Switch, useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Route, Redirect, useLocation } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Header from "./Header";
 import UserInfo from "./UserInfo";
@@ -10,15 +10,7 @@ import Image from "./Image";
 
 import ChatApp from "./Teamchat/ChatApp";
 
-import ZoomCard from "./Teamchat/PreviewContentCard";
-
-import ZoomAppEditor from "./Teamchat/QuillZoomAppEditor";
-
-import TextEditor from "./Teamchat/TextEditor";
-
 import EditorRoutes from './Teamchat/EditorRoutes';
-
-import { v4 as uuidV4 } from "uuid"
 
 export const Authorization = (props) => {
 

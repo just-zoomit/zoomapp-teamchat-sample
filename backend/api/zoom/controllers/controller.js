@@ -63,10 +63,11 @@ module.exports = {
 
       const channels = response.data.channels
 
-      res.json({channels});
+      res.status(200).json({ channels });
       
     } catch (error) {
-      return next(new Error('Error listing chat message ', error))
+      return res.status(500).json({ error: 'Error listing chat channels', details: error.message });
+
     }
   }
 

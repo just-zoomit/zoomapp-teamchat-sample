@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Button from "react-bootstrap/Button";
-import './SettingsPage.css';  // Import the CSS file for styling
+import './SettingsPage.css'; 
 import ShareButton from './ShareButton';
 
 const SettingsPage = () => {
@@ -12,7 +12,7 @@ const SettingsPage = () => {
     const [showNotification, setShowNotification] = useState(false);
 
     const role = ""; 
-    const isHost = role === 'host';
+    // const isHost = role === 'host';
 
     const startTxt = `${isCollaborating ? 'End' : 'Start'} Collaboration`;
     const joinTxt = `${isCollaborating ? 'Leave' : 'Join'} Collaboration`;
@@ -24,18 +24,18 @@ const SettingsPage = () => {
             } else {
                 await zoomSdk.startCollaborate({});
             }
-            setIsCollaborating(!isCollaborating); // Toggle collaboration status
+            setIsCollaborating(!isCollaborating); 
             setShowNotification(true);
             setErrorMessage('');
             setTimeout(() => {
                 setShowNotification(false);
-            }, 2000); // Hide the notification after 2 seconds
+            }, 2000);
         } catch (error) {
             setShowNotification(true);
             setErrorMessage(error.message || 'An error occurred during collaboration.');
             setTimeout(() => {
                 setShowNotification(false);
-            }, 2000); // Hide the notification after 2 seconds
+            }, 2000); 
         }
     };
 
@@ -46,18 +46,18 @@ const SettingsPage = () => {
             } else {
                 await zoomSdk.joinCollaborate();
             }
-            setIsCollaborating(!isCollaborating); // Toggle collaboration status
+            setIsCollaborating(!isCollaborating); 
             setShowNotification(true);
             setErrorMessage('');
             setTimeout(() => {
                 setShowNotification(false);
-            }, 2000); // Hide the notification after 2 seconds
+            }, 2000); 
         } catch (error) {
             setShowNotification(true);
             setErrorMessage(error.message || 'An error occurred during collaboration.');
             setTimeout(() => {
                 setShowNotification(false);
-            }, 2000); // Hide the notification after 2 seconds
+            }, 2000); 
         }
     };
 

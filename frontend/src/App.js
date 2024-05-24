@@ -155,9 +155,9 @@ function App() {
           zoomSdk.getMeetingChatContext().then((chatContext) => {
           
 
-            // if the meeting chat context is not set, list all chat channels and prompt user to select one
+           
             if (!chatContext.chatChannelUUID) {
-              // If not chat channel, then 
+             
               zoomSdk.getChatContext().then((chatContext) => {
                 console.log("Chat Context: ", chatContext);
                 setMeetingChatContext(chatContext.chatChannelUUID);

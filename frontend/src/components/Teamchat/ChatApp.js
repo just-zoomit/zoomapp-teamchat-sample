@@ -29,7 +29,7 @@ const ChatApp = (props) => {
 
         <Col xs={9} className="d-flex flex-column p-3" style={{ height: '75vh' }}>
           <div className="flex-grow-1" style={{ overflowY: 'auto' }}>
-            {/* Main chat area or other content can go here */}
+          
           </div>
           <div className="Teamchat-sample">
             <Teamchat selectedChannelId={selectedChannelId} {...props} />

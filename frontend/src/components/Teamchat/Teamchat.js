@@ -22,7 +22,7 @@ const Teamchat = (props) => {
       setShowNotification(true);
       setTimeout(() => {
         setShowNotification(false);
-      }, 2000); // Hide the notification after 2 seconds
+      }, 2000); 
       return;
     } else{
     
@@ -33,7 +33,7 @@ const Teamchat = (props) => {
     setShowNotification(true);
     setTimeout(() => {
       setShowNotification(false);
-    }, 2000); // Hide the notification after 2 seconds
+    }, 2000); 
 
     }
 
@@ -74,7 +74,7 @@ const Teamchat = (props) => {
       });
 
       if (!response.ok) throw new Error("Failed to fetch user message");
-      const responseData = await response.json();
+     
     } catch (error) {
       console.error("Error fetching user message:", error);
     }
