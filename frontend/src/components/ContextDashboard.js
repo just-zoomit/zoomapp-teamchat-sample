@@ -4,7 +4,10 @@ import { Card } from 'react-bootstrap';
 const ContextDashboard = ({ user, userContextStatus, runningContext, meetingChatContext, connected }) => {
     return (
       <Card style={{ position: 'absolute', top: '70px', right: '80px', width: '450px' }}>
+      
         <Card.Body>
+        {/* Not working, it appear in the img-src directive of the Content Security Policy. */}
+        {user && user.pic_url && (<Card.Img variant="top" src={user.pic_url} />)}
           <Card.Title>
             Hello{user ? ` ${user.first_name} ${user.last_name}` : " Dev Advocate"}!
           </Card.Title>

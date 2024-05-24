@@ -12,7 +12,7 @@ function Header(props) {
           const navName = navLink[1];
           return (
             <li key={route}>
-              <NavLink activeClassName="active" to={route}>
+              <NavLink activeClassName="active" to={`/${route}`}>
                 {navName}
               </NavLink>
             </li>

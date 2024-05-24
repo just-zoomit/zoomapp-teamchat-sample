@@ -119,6 +119,7 @@ export const Authorization = (props) => {
 
         if (response.status !== 200) throw new Error();
         const user = await response.json();
+        console.log("User information fetched from Zoom REST API", user.pic_url);
         handleUser(user);
         setShowInClientOAuthPrompt(false);
       } catch (error) {
@@ -158,11 +159,8 @@ export const Authorization = (props) => {
       </Button>}
 
       <div>
-        {/* {!shouldHideHeader && (
-          <Header
-            navLinks={{ userInfo: "User Info", iframe: "IFrame", image: "Image", teamchat: "Teamchat", editor: "Editor" }}
-          />
-        )} */}
+      
+        {/* {!shouldHideHeader && (<HEADER COMPONENT>)} */}
 
         <Header
             navLinks={{ userInfo: "User Info", iframe: "IFrame", image: "Image", teamchat: "Teamchat", editor: "Editor" }}
