@@ -14,6 +14,8 @@ const ChatApp = (props) => {
           <div className="centered-div">
             <h1>Team Chat</h1>
           </div>
+          
+         
           <p>
             {meetingChatContext
               ? `Meeting Chat Context: ${meetingChatContext}`
@@ -24,6 +26,8 @@ const ChatApp = (props) => {
               ? `User Context Status: ${userContextStatus}`
               : "Configuring Zoom JavaScript SDK..."}
           </p>
+         
+
           <ChatChannels onChannelSelect={setSelectedChannelId} />
         </Col>
 

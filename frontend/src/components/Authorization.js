@@ -158,11 +158,15 @@ export const Authorization = (props) => {
       </Button>}
 
       <div>
-        {!shouldHideHeader && (
+        {/* {!shouldHideHeader && (
           <Header
             navLinks={{ userInfo: "User Info", iframe: "IFrame", image: "Image", teamchat: "Teamchat", editor: "Editor" }}
           />
-        )}
+        )} */}
+
+        <Header
+            navLinks={{ userInfo: "User Info", iframe: "IFrame", image: "Image", teamchat: "Teamchat", editor: "Editor" }}
+          />
 
       
           <Route path="/" exact>

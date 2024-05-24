@@ -10,6 +10,7 @@ import "./App.css";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "quill/dist/quill.snow.css";// for snow theme
+import ContextDashboard from "./components/ContextDashboard";
 
 
 let once = 0; // to prevent increasing number of event listeners being added
@@ -230,21 +231,18 @@ function App() {
 
       {runningContext !== 'inChat' ? (
       <>
-      <h1>Hello{user ? ` ${user.first_name} ${user.last_name}` : " Zoom Apps user"}!</h1>
-      <p>{`User Context Status: ${userContextStatus}`}</p>
-      <p>
-        {runningContext ?
-          `Running Context: ${runningContext}` :
-          "Configuring Zoom JavaScript SDK..."
-        }
-      </p>
-      <p>
-        {connected ?
-          `Meeting Chat Context: ${meetingChatContext}`:
-          "Connecting to meeting..."
-        }
-      </p>
-        <ApiScrollview />
+
+      <ApiScrollview />
+
+      <ContextDashboard
+        user={user}
+        userContextStatus={userContextStatus}
+        runningContext={runningContext}
+        meetingChatContext={meetingChatContext}
+        connected={connected}
+      />
+      
+        
         <Authorization
           handleError={setError}
           handleUserContextStatus={setUserContextStatus}
