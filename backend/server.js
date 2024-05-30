@@ -11,6 +11,7 @@ const middleware = require('./middleware')
 const zoomAppRouter = require('./api/zoomapp/router')
 const zoomRouter = require('./api/zoom/router')
 const thirdPartyOAuthRouter = require('./api/thirdpartyauth/router')
+
 // Create app
 const app = express()
 
