@@ -7,6 +7,7 @@ router
   .use('/api', getUser, refreshToken, setZoomAuthHeader, controller.proxy)
   .post('/sign', controller.sign)
   .get('/getChatChannels', controller.getUserChatChannels)
+  .get('/recordings', controller.sendRecodings)
   .post('/sendAChatMessage', controller.sendAChatMessage)
   .post('/command', webhookController.handleWebhook)
 

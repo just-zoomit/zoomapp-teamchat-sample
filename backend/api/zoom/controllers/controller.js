@@ -138,6 +138,7 @@ module.exports = {
       const chatbotToken = await zoomApi.getChatbotToken();
       console.log('Chatbot Token:', chatbotToken);
       const recordings = await zoomApi.getZoomRecordings(appUser.accessToken, from, to);
+      console.log('Recordings -->:', recordings);
       const chatBody = zoomApi.generateChatBody(recordings, req.body.payload);
 
       // Send the interactive chat message
@@ -148,6 +149,32 @@ module.exports = {
       console.error('Error occurred:', error);
       // Handle errors appropriately by sending a 500 Internal Server Error response
       res.status(500).send(`/${command} api -- Internal Server Error`);
+    }
+  },
+  async sendRecodings(req, res, next) {
+    console.log('SEND Recording');
+
+    const userId = "ZIWbvGFnQQ6NsiLKhkLDJA";
+    // Check if userId is provided before proceeding
+    if (!userId) {
+      console.log('User ID is required but was not provided.');
+      return res.status(400).send('User ID is required.');
+    }
+
+    try {
+      // Fetch user details, token, and recordings using the provided userId
+      const appUser = await store.getUser(userId);
+      if (!appUser) {
+        console.log('No user found with the provided User ID.');
+        return res.status(404).send('User not found.');
+      }
+
+      const recordings = await zoomApi.getZoomRecordings(appUser.accessToken, "2024-04-06", "2024-05-30");
+      console.log('Recordings Sent-->:', recordings);
+      res.status(200).send(recordings);
+    } catch (error) {
+      console.error('Error occurred:', error);
+     
     }
   },
   async sendIMMessage(req, res, next) {

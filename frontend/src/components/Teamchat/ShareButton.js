@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Dropdown, Modal, Form, DropdownButton } from 'react-bootstrap';
+import { Button, Dropdown, Modal, Form, DropdownButton, ButtonGroup } from 'react-bootstrap';
 import { useLocation, useHistory } from "react-router-dom";
 
 const interactiveCard = {
@@ -59,7 +59,7 @@ const createMessagePayload = (message, channelId) => ({
   ]
 });
 
-const ShareButton = () => {
+const ShareButton = (props) => {
   const history = useHistory();
   const location = useLocation();
 
@@ -67,39 +67,56 @@ const ShareButton = () => {
   const [showModal, setShowModal] = useState(false);
   const [channels, setChannels] = useState([]);
   const [selectedChannel, setSelectedChannel] = useState(null);
+  const [sendToContinuousChat, setSendToContinuousChat] = useState(false);
+  const [sendButtonText, setSendButtonText] = useState("Send");
+
+  const { userContextStatus, meetingChatContext } = props;
+
+  console.log("Sending From Share Button", userContextStatus, meetingChatContext);
+  console.log("Meeting Context", meetingChatContext);
 
   useEffect(() => {
     fetchChatChannels();
   }, []);
 
-
   const fetchChatChannels = async () => {
     try {
       const response = await fetch('/zoom/getChatChannels');
-      
       if (!response.ok) throw new Error(`Network response was not ok: ${response.statusText}`);
-
       const data = await response.json();
-      
       if (!data.channels) throw new Error('Channels data is missing');
-
       setChannels(data.channels);
-      
     } catch (error) {
       console.error("Error fetching chat channels:", error);
     }
-};
+  };
 
   const handleModalShow = () => setShowModal(true);
-  const handleModalClose = () => setShowModal(false);
-  const handleChannelSelect = (channel) => setSelectedChannel(channel);
+  const handleModalClose = () => {
+    setShowModal(false);
+    setSendButtonText("Send");
+    setSendToContinuousChat(false);
+    setSelectedChannel(null);
+  };
+  const handleChannelSelect = (channel) => {
+    setSelectedChannel(channel);
+    setSendButtonText("Send to Chat Channel");
+  };
   const handleMessageChange = (e) => setMessage(e.target.value);
+  const handleSendOptionSelect = (option) => {
+    setSendToContinuousChat(option === 'continuous');
+    if (option === 'continuous' && meetingChatContext) {
+      setSelectedChannel(null);
+      setSendButtonText("Send to Continuous Chat");
+    } else {
+      setSendButtonText("Send to Chat Channel");
+    }
+  };
   const goDoc = () => history.push('/userInfo');
 
   const copyDocLink = async () => {
     try {
       const docLink = `${window.location.origin}${location.pathname}`;
-    //   await navigator.clipboard.writeText(docLink);
       console.log('Document link copied to clipboard:', docLink);
     } catch (error) {
       console.error('Failed to copy document link:', error);
@@ -107,14 +124,21 @@ const ShareButton = () => {
   };
 
   const handleSend = async () => {
-    if (!selectedChannel) {
-      console.error("No channel selected");
+    if (!meetingChatContext && !selectedChannel) {
+      console.error("No channel selected and meeting chat context is not available");
+      setSendButtonText("Send");
       return;
     }
 
     try {
-    
-      await sendMessage(message, selectedChannel.id);
+      if (sendToContinuousChat && meetingChatContext) {
+        // Implement logic for sending to continuous chat
+        console.log("Sending to continuous chat...");
+        await sendMessage(message, meetingChatContext);
+      } else {
+        await sendMessage(message, selectedChannel.id);
+      }
+
       clearMessageAndCloseModal();
     } catch (error) {
       console.error("Error sending message:", error);
@@ -123,7 +147,6 @@ const ShareButton = () => {
 
   const sendMessage = async (message, channelId) => {
     const data = createMessagePayload(message, channelId);
-
     const response = await fetch("/zoom/sendAChatMessage", {
       method: 'POST',
       body: JSON.stringify(data),
@@ -131,10 +154,7 @@ const ShareButton = () => {
         "Content-Type": "application/json",
       },
     });
-
-
     if (!response.ok) throw new Error("Failed to send message");
-
   };
 
   const clearMessageAndCloseModal = () => {
@@ -158,7 +178,6 @@ const ShareButton = () => {
       <Modal show={showModal} onHide={handleModalClose}>
         <Modal.Header closeButton>
           <Modal.Title>Share to Zoom Team Chat</Modal.Title>
-         
         </Modal.Header>
 
         <Modal.Body>
@@ -196,9 +215,16 @@ const ShareButton = () => {
           <Button variant="secondary" onClick={handleModalClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleSend}>
-            Send
-          </Button>
+          <DropdownButton
+            as={ButtonGroup}
+            title={sendButtonText}
+            id="bg-nested-dropdown"
+            variant="primary"
+            onSelect={handleSendOptionSelect}
+          >
+            <Dropdown.Item eventKey="channel" onClick={handleSend}>Send to Chat Channel</Dropdown.Item>
+            <Dropdown.Item eventKey="continuous" onClick={handleSend}>Send to Continuous Chat</Dropdown.Item>
+          </DropdownButton>
         </Modal.Footer>
       </Modal>
     </div>

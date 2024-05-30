@@ -1,24 +1,49 @@
 /* globals zoomSdk */
-import React, { useState } from 'react';
-import Button from "react-bootstrap/Button";
-import Form from 'react-bootstrap/Form';
+import React, { useState, useEffect } from 'react';
+import { Button, Form, InputGroup, FormControl, ListGroup } from "react-bootstrap";
+
+const BitmapValue = "Qk06AAAAAAAAADYAAAAoAAAAAQAAAAEAAAABABgAAAAAAAQAAADEDgAAxA4AAAAAAAAAAAAAAgD+AA==";
 
 const ZoomCard = () => {
   const [error, setError] = useState(null);
-  const [chatContext, setChatContext] = useState(null); // State to hold chatContext
+  const [chatContext, setChatContext] = useState(null);
+  const [recordings, setRecordings] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedRecording, setSelectedRecording] = useState(null);
+  const [bitmap, setBitmap] = useState(BitmapValue);
 
-  const [meetingId, setMeetingId] = useState("97231146424");
-  const [shareUrl, setShareUrl] = useState("https://pooja-onelogin-test.zoom.us/rec/share/yZlABeUkEqe8T22L_9uiJY21HgFNt1LaelsTU_X__8xIhC-vVxDV4BtCG-bbESmz.Vd1h6n_U7QRyvZXe");
-  const [bitmap, setBitmap] = useState("Placeholder for bitmap");
+  useEffect(() => {
+    listRecordings();
+  }, []);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    if (name === "meetingId") setMeetingId(value);
-    if (name === "shareUrl") setShareUrl(value);
-    if (name === "bitmap") setBitmap(value);
+  const listRecordings = async () => {
+    try {
+      const res = await fetch("/zoom/recordings", {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      const data = await res.json();
+      setRecordings(data.meetings);
+      if (data.meetings.length > 0) {
+        setSelectedRecording(data.meetings[0]);
+      }
+    } catch (e) {
+      console.error("Error when fetching recordings ", e);
+      setError(e.message);
+    }
   };
 
   const sendZoomCard = async () => {
+    if (!selectedRecording) {
+      setError("No recording selected");
+      return;
+    }
+
+    const { id: meetingId, share_url: shareUrl } = selectedRecording;
+
     try {
       const content = {
         content: {
@@ -69,52 +94,48 @@ const ZoomCard = () => {
     }
   };
 
-  
-    return (
-      <div>
-        {error && <p>Error: {error}</p>}
-        <h1>Zoom Meeting Card Generator</h1>
-  
-        <Form>
-          <Form.Group className="mb-3" controlId="formMeetingId">
-            <Form.Label>Meeting ID:</Form.Label>
-            <Form.Control
-              type="text"
-              name="meetingId"
-              value={meetingId}
-              onChange={handleInputChange}
-              placeholder="Enter Meeting ID"
-            />
-          </Form.Group>
-  
-          <Form.Group className="mb-3" controlId="formShareUrl">
-            <Form.Label>Share URL:</Form.Label>
-            <Form.Control
-              type="text"
-              name="shareUrl"
-              value={shareUrl}
-              onChange={handleInputChange}
-              placeholder="Enter Share URL"
-            />
-          </Form.Group>
-  
-          <Form.Group className="mb-3" controlId="formBitmap">
-            <Form.Label>Bitmap:</Form.Label>
-            <Form.Control
-              type="text"
-              name="bitmap"
-              value={bitmap}
-              onChange={handleInputChange}
-              placeholder="Placeholder for bitmap"
-            />
-          </Form.Group>
-  
-          <Button variant="primary" onClick={sendZoomCard}>Generate Zoom Card</Button>
-        </Form>
-      
-        <p>Chat Context: {JSON.stringify(chatContext)}</p>
-      </div>
-    );
-  };
-  
-  export default ZoomCard;
+  const filteredRecordings = recordings.filter(recording =>
+    recording.topic.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  return (
+    <div>
+      {error && <p>Error: {error}</p>}
+      <h1>Zoom Meeting Card Generator</h1>
+
+      <InputGroup className="mb-3">
+        <FormControl
+          placeholder="Search Recordings"
+          aria-label="Search Recordings"
+          aria-describedby="basic-addon2"
+          value={searchTerm}
+          onChange={e => setSearchTerm(e.target.value)}
+        />
+      </InputGroup>
+
+      <ListGroup>
+        {filteredRecordings.map(recording => (
+          <ListGroup.Item
+            key={recording.id}
+            active={selectedRecording && selectedRecording.id === recording.id}
+            onClick={() => setSelectedRecording(recording)}
+            action
+          >
+            {recording.topic}
+          </ListGroup.Item>
+        ))}
+      </ListGroup>
+
+      <Form className="mt-3">
+
+        
+
+        <Button variant="primary" onClick={sendZoomCard}>Generate Zoom Card</Button>
+      </Form>
+
+      <p>Chat Context: {JSON.stringify(chatContext)}</p>
+    </div>
+  );
+};
+
+export default ZoomCard;

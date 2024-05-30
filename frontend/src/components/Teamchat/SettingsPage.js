@@ -5,11 +5,17 @@ import Button from "react-bootstrap/Button";
 import './SettingsPage.css'; 
 import ShareButton from './ShareButton';
 
-const SettingsPage = () => {
+const SettingsPage = (props) => {
     const history = useHistory();
     const [isCollaborating, setIsCollaborating] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [showNotification, setShowNotification] = useState(false);
+
+    const { user, userContextStatus, meetingChatContext } = props;
+
+    console.log("Sending From Setting Page ", userContextStatus);
+    console.log("Sending From Meeting Context", meetingChatContext);
+
 
     const role = ""; 
     // const isHost = role === 'host';
@@ -74,7 +80,11 @@ const SettingsPage = () => {
                     {joinTxt}
                 </Button>
 
-                <ShareButton />
+                <ShareButton
+                    user={user}
+                    userContextStatus={userContextStatus}
+                    meetingChatContext={meetingChatContext}
+                 />
 
                 <Button onClick={goHome}>
                     <span className='icon is-small'>

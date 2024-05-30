@@ -4,13 +4,17 @@ import { useCallback, useEffect, useState } from "react";
 import { apis } from "./apis";
 import { Authorization } from "./components/Authorization";
 import ApiScrollview from "./components/ApiScrollview";
-import ZoomCard from "./components/Teamchat/PreviewContentCard";
+import Spinner from "react-bootstrap/Spinner";
+
 import "./App.css";
 
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "quill/dist/quill.snow.css";// for snow theme
 import ContextDashboard from "./components/ContextDashboard";
+
+import ZoomCard from "./components/Teamchat/PreviewContentCard";
+
 
 
 let once = 0; // to prevent increasing number of event listeners being added
@@ -254,7 +258,10 @@ function App() {
         />
       </>
     ) : (
-      <ZoomCard />
+          
+      <ZoomCard/>
+    
+    
     )}
 
     </div>
