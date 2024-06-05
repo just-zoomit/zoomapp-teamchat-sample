@@ -13,10 +13,7 @@ const SettingsPage = (props) => {
 
     const { user, userContextStatus, meetingChatContext } = props;
 
-    console.log("Sending From Setting Page ", userContextStatus);
-    console.log("Sending From Meeting Context", meetingChatContext);
-
-
+   
     const role = ""; 
     // const isHost = role === 'host';
 

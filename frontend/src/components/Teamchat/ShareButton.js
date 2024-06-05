@@ -1,29 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Dropdown, Modal, Form, DropdownButton, ButtonGroup } from 'react-bootstrap';
-import { useLocation, useHistory } from "react-router-dom";
+import { Button, Modal, Form, DropdownButton, Dropdown, ButtonGroup } from 'react-bootstrap';
 
 const interactiveCard = {
   "content": {
     "settings": { "form": true },
     "head": {
-      "text": "I am a head text",
-      "sub_head": { "text": "I am a sub head text" }
+      "text": "Message Sent from Zoom App Team Chat Demo",
+      "sub_head": { "text": "Click button below to trigger Team Chat interactive_message_actions Webhook Event" }
     },
     "body": [
       {
-        "type": "attachments",
-        "resource_url": "https://a7d4-38-99-100-7.ngrok-free.app/hello",
-        "img_url": "https://d24cgw3uvb9a9h.cloudfront.net/static/93516/image/new/ZoomLogo.png",
-        "information": {
-          "title": { "text": "I am an attachment title" },
-          "description": { "text": "I am an attachment description" }
-        }
-      },
-      {
         "type": "actions",
         "items": [
-          { "text": "Open", "value": "open", "style": "Primary" },
-          { "text": "Edit", "value": "edit", "style": "Default" }
+          { "text": "Collaborate in Zoom App", "value": "open", "style": "Primary" },
+
         ]
       }
     ]
@@ -48,10 +38,7 @@ const createMessagePayload = (message, channelId) => ({
     }
   ],
   "message": message,
-  "file_ids": [""],
-  "reply_main_message_id": "",
   "to_channel": channelId,
-  "to_contact": "",
   "interactive_cards": [
     {
       "card_json": JSON.stringify(interactiveCard)
@@ -60,9 +47,6 @@ const createMessagePayload = (message, channelId) => ({
 });
 
 const ShareButton = (props) => {
-  const history = useHistory();
-  const location = useLocation();
-
   const [message, setMessage] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [channels, setChannels] = useState([]);
@@ -70,10 +54,8 @@ const ShareButton = (props) => {
   const [sendToContinuousChat, setSendToContinuousChat] = useState(false);
   const [sendButtonText, setSendButtonText] = useState("Send");
 
-  const { userContextStatus, meetingChatContext } = props;
 
-  console.log("Sending From Share Button", userContextStatus, meetingChatContext);
-  console.log("Meeting Context", meetingChatContext);
+  const { meetingChatContext } = props;
 
   useEffect(() => {
     fetchChatChannels();
@@ -110,16 +92,6 @@ const ShareButton = (props) => {
       setSendButtonText("Send to Continuous Chat");
     } else {
       setSendButtonText("Send to Chat Channel");
-    }
-  };
-  const goDoc = () => history.push('/userInfo');
-
-  const copyDocLink = async () => {
-    try {
-      const docLink = `${window.location.origin}${location.pathname}`;
-      console.log('Document link copied to clipboard:', docLink);
-    } catch (error) {
-      console.error('Failed to copy document link:', error);
     }
   };
 
@@ -163,18 +135,13 @@ const ShareButton = (props) => {
   };
 
   return (
+    <>
     <div style={{ display: 'block', width: '100%' }}>
-      <Dropdown>
-        <Dropdown.Toggle variant="primary" id="dropdown-basic" style={{ width: '100%' }}>
-          Share
-        </Dropdown.Toggle>
-
-        <Dropdown.Menu>
-          <Dropdown.Item onClick={handleModalShow}>Share to Chat</Dropdown.Item>
-          <Dropdown.Item onClick={copyDocLink}>Copy Link</Dropdown.Item>
-        </Dropdown.Menu>
-      </Dropdown>
-
+    
+      <Button variant="primary" style={{ width: '100%' }} onClick={handleModalShow}>
+        Share
+      </Button>
+      
       <Modal show={showModal} onHide={handleModalClose}>
         <Modal.Header closeButton>
           <Modal.Title>Share to Zoom Team Chat</Modal.Title>
@@ -182,23 +149,47 @@ const ShareButton = (props) => {
 
         <Modal.Body>
           <Form>
+            <Form.Group controlId="formSendOption">
+              <Form.Label>Share to</Form.Label>
+              <div style={{ width: '100%' }}>
+                <DropdownButton
+                  id="dropdown-basic-button"
+                  as={ButtonGroup}
+                  title={sendButtonText}
+                  onSelect={handleSendOptionSelect}
+                  
+                >
+                  <Dropdown.Item eventKey="channel">Send to Chat Channel</Dropdown.Item>
+                  <Dropdown.Item eventKey="continuous">Send to Continuous Chat</Dropdown.Item>
+                </DropdownButton>
+              </div>
+            </Form.Group>
+
             <Form.Group controlId="formChannel">
               <Form.Label>Select Channel</Form.Label>
-              <DropdownButton
-                id="dropdown-basic-button"
-                title={selectedChannel ? selectedChannel.name : "Channels"}
-              >
-                {channels.map(channel => (
-                  <Dropdown.Item
-                    key={channel.id}
-                    active={selectedChannel && selectedChannel.id === channel.id}
-                    onClick={() => handleChannelSelect(channel)}
-                  >
-                    {channel.name}
-                  </Dropdown.Item>
-                ))}
-              </DropdownButton>
+              <div style={{ width: '100%' }}>
+                <DropdownButton
+                  id="dropdown-basic-button"
+                  title={selectedChannel ? selectedChannel.name : "Channels"}
+                  disabled={sendToContinuousChat}
+                 
+                >
+                
+                  {channels.map(channel => (
+                    <Dropdown.Item
+                      key={channel.id}
+                      active={selectedChannel && selectedChannel.id === channel.id}
+                      onClick={() => handleChannelSelect(channel)}
+                    >
+                      {channel.name}
+                    </Dropdown.Item>
+                  ))}
+
+                </DropdownButton>
+              </div>
             </Form.Group>
+
+            
             <Form.Group controlId="formMessage">
               <Form.Label>Message</Form.Label>
               <Form.Control
@@ -215,19 +206,13 @@ const ShareButton = (props) => {
           <Button variant="secondary" onClick={handleModalClose}>
             Close
           </Button>
-          <DropdownButton
-            as={ButtonGroup}
-            title={sendButtonText}
-            id="bg-nested-dropdown"
-            variant="primary"
-            onSelect={handleSendOptionSelect}
-          >
-            <Dropdown.Item eventKey="channel" onClick={handleSend}>Send to Chat Channel</Dropdown.Item>
-            <Dropdown.Item eventKey="continuous" onClick={handleSend}>Send to Continuous Chat</Dropdown.Item>
-          </DropdownButton>
+          <Button variant="primary" onClick={handleSend}>
+            {sendButtonText}
+          </Button>
         </Modal.Footer>
       </Modal>
     </div>
+    </>
   );
 };
 

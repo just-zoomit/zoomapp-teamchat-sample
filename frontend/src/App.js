@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { apis } from "./apis";
 import { Authorization } from "./components/Authorization";
 import ApiScrollview from "./components/ApiScrollview";
-import Spinner from "react-bootstrap/Spinner";
+
 
 import "./App.css";
 

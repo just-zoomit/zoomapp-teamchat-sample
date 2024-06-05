@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react"
+import { useCallback } from "react"
 import Quill from "quill"
 import "quill/dist/quill.snow.css"
 import SettingsPage from './SettingsPage';
@@ -11,9 +11,8 @@ const TOOLBAR_OPTIONS = [
     ["bold", "italic", "underline"],
     [{ color: [] }, { background: [] }],
     [{ script: "sub" }, { script: "super" }],
-    [{ align: [] }],
-    ["image", "blockquote", "code-block"],
-    ["clean"],
+   
+   
 ];
 
 export default function TextEditor(props) {
@@ -31,7 +30,7 @@ export default function TextEditor(props) {
     return (
         <>
             <div>
-                <h1 style={{ textAlign: "center" }}>Collaborative Editor</h1>
+               
                 <SettingsPage
                     {...props}
                 />

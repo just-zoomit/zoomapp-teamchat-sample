@@ -5,35 +5,64 @@ header {
   margin-bottom: 10px;
   margin-top: 10px;
   border-radius: 0.25em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px; /* Add some padding for spacing */
 }
 
 header nav {
-  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-header ul {
-  height: 100%;
+.nav-links {
   list-style: none;
   display: flex;
+  gap: 20px;
   padding: 0;
   margin: 0;
-  align-items: center;
-  justify-content: left;
 }
 
-header li {
-  margin: 0 1rem;
+.nav-links li {
+  display: inline;
 }
 
-header a {
+.nav-links a {
   color: white;
   text-decoration: none;
 }
 
-header a:hover,
-header a:active,
-header a.active {
+.nav-links a:hover,
+.nav-links a:active,
+.nav-links a.active {
   color: #95bcf0;
   padding-bottom: 0.25rem;
   border-bottom: 4px solid #95bcf0;
+}
+
+.icons {
+  display: flex;
+  gap: 20px;
+}
+
+.icon {
+  font-size: 24px;
+  cursor: pointer;
+  color: white;
+}
+
+.icon.danger {
+  color: red;
+}
+
+.icon.warning {
+  color: yellow;
+}
+
+.notification {
+  margin-top: 20px;
+  color: red; /* Or any color that fits your theme */
 }

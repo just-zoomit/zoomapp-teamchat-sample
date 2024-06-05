@@ -101,7 +101,13 @@ const ZoomCard = () => {
   return (
     <div>
       {error && <p>Error: {error}</p>}
-      <h1>Zoom Meeting Card Generator</h1>
+
+      <p>
+  Select a recording, then click "Generate Zoom Card" to send an interactive message 
+  and its preview to the user’s compose box in the chat context. When the user posts 
+  the card, the actual content of the message will be rendered as an interactive message.
+</p>
+
 
       <InputGroup className="mb-3">
         <FormControl
@@ -113,27 +119,26 @@ const ZoomCard = () => {
         />
       </InputGroup>
 
-      <ListGroup>
-        {filteredRecordings.map(recording => (
-          <ListGroup.Item
-            key={recording.id}
-            active={selectedRecording && selectedRecording.id === recording.id}
-            onClick={() => setSelectedRecording(recording)}
-            action
-          >
-            {recording.topic}
-          </ListGroup.Item>
-        ))}
-      </ListGroup>
+      <div style={{ maxHeight: '200px', overflowY: 'auto', marginBottom: '1rem' }}>
+        <ListGroup>
+          {filteredRecordings.map(recording => (
+            <ListGroup.Item
+              key={recording.id}
+              active={selectedRecording && selectedRecording.id === recording.id}
+              onClick={() => setSelectedRecording(recording)}
+              action
+            >
+              {recording.topic}
+            </ListGroup.Item>
+          ))}
+        </ListGroup>
+      </div>
 
-      <Form className="mt-3">
-
-        
-
+      <Form className="d-flex justify-content-end mt-3">
         <Button variant="primary" onClick={sendZoomCard}>Generate Zoom Card</Button>
       </Form>
 
-      <p>Chat Context: {JSON.stringify(chatContext)}</p>
+   
     </div>
   );
 };
