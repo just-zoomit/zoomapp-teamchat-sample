@@ -14,47 +14,47 @@ function Header(props) {
   const { user, userContextStatus, meetingChatContext } = props;
 
   const handleStartClick = async () => {
-      try {
-          if (isCollaborating) {
-              await zoomSdk.endCollaborate();
-          } else {
-              await zoomSdk.startCollaborate({});
-          }
-          setIsCollaborating(!isCollaborating); 
-          setShowNotification(true);
-          setErrorMessage('');
-          setTimeout(() => {
-              setShowNotification(false);
-          }, 2000);
-      } catch (error) {
-          setShowNotification(true);
-          setErrorMessage(error.message || 'An error occurred during collaboration.');
-          setTimeout(() => {
-              setShowNotification(false);
-          }, 2000); 
+    try {
+      if (isCollaborating) {
+        await zoomSdk.endCollaborate();
+      } else {
+        await zoomSdk.startCollaborate({});
       }
+      setIsCollaborating(!isCollaborating);
+      setShowNotification(true);
+      setErrorMessage('');
+      setTimeout(() => {
+        setShowNotification(false);
+      }, 2000);
+    } catch (error) {
+      setShowNotification(true);
+      setErrorMessage(error.message || 'An error occurred during collaboration.');
+      setTimeout(() => {
+        setShowNotification(false);
+      }, 2000);
+    }
   };
 
   const handleJoinClick = async () => {
-      try {
-          if (isCollaborating) {
-              await zoomSdk.leaveCollaborate();
-          } else {
-              await zoomSdk.joinCollaborate();
-          }
-          setIsCollaborating(!isCollaborating); 
-          setShowNotification(true);
-          setErrorMessage('');
-          setTimeout(() => {
-              setShowNotification(false);
-          }, 2000); 
-      } catch (error) {
-          setShowNotification(true);
-          setErrorMessage(error.message || 'An error occurred during collaboration.');
-          setTimeout(() => {
-              setShowNotification(false);
-          }, 2000); 
+    try {
+      if (isCollaborating) {
+        await zoomSdk.leaveCollaborate();
+      } else {
+        await zoomSdk.joinCollaborate();
       }
+      setIsCollaborating(!isCollaborating);
+      setShowNotification(true);
+      setErrorMessage('');
+      setTimeout(() => {
+        setShowNotification(false);
+      }, 2000);
+    } catch (error) {
+      setShowNotification(true);
+      setErrorMessage(error.message || 'An error occurred during collaboration.');
+      setTimeout(() => {
+        setShowNotification(false);
+      }, 2000);
+    }
   };
 
   const goHome = () => history.push('/userInfo');
@@ -72,9 +72,7 @@ function Header(props) {
           ))}
         </ul>
         <div className="icons">
-          {isCollaborating ? (
-            <FaStop className="icon danger" title="End Collaboration" onClick={handleStartClick} />
-          ) : (
+          {isCollaborating ? (<FaStop className="icon danger" title="End Collaboration" onClick={handleStartClick} />) : (
             <FaPlay className="icon primary" title="Start Collaboration" onClick={handleStartClick} />
           )}
           {isCollaborating ? (
