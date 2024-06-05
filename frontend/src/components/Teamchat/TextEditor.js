@@ -1,7 +1,7 @@
 import { useCallback } from "react"
 import Quill from "quill"
 import "quill/dist/quill.snow.css"
-import SettingsPage from './SettingsPage';
+
 
 const TOOLBAR_OPTIONS = [
     [{ toolbar: { container: '#toolbar' } }],
@@ -9,7 +9,6 @@ const TOOLBAR_OPTIONS = [
     [{ font: [] }],
     [{ list: "ordered" }, { list: "bullet" }],
     ["bold", "italic", "underline"],
-    [{ color: [] }, { background: [] }],
     [{ script: "sub" }, { script: "super" }],
    
    
@@ -29,12 +28,7 @@ export default function TextEditor(props) {
 
     return (
         <>
-            <div>
-               
-                <SettingsPage
-                    {...props}
-                />
-            </div>
+            
             <div className="container" ref={wrapperRef}></div>
         </>
     );

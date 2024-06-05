@@ -219,7 +219,7 @@ module.exports = {
       lastName: "Johnson"
     });
 
-    await zoomApi.sendUnfurlChat(customMessage, chatbotToken); // Corrected function name
+    await zoomApi.sendUnfurlChat(customMessage, chatbotToken); 
 
     res.status(200).send();
   } catch (error) {
@@ -227,6 +227,32 @@ module.exports = {
     res.status(500).send(`Internal Server Error`);
   }
 },
+  async sendInteractiveMessageActions(req, res, next) {
+    console.log('SEND INTERACTIVE MESSAGE ACTIONS HANDLER ====================================================', '\n');
+    try {
+  
+      const chatbotToken = await zoomApi.getChatbotToken();
+
+      const users = req?.body?.payload?.userId
+
+      if (!users) {
+        return next(new Error('No session or no user. You may need to close and reload or reinstall the application'))
+      }
+
+      const appUser = await store.getUser(users)
+      req.appUser = appUser
+      console.log('App User Interactive:', appUser)
+  
+  
+      await zoomApi.sendInteractiveChat( appUser.accessToken); // Corrected function name
+  
+      res.status(200).send();
+    } catch (error) {
+      console.error('Error occurred:', error);
+      res.status(500).send(`Internal Server Error`);
+    }
+  }
+,
   // Proxy requests to the Zoom REST API
   proxy: createProxyMiddleware({
     target: process.env.ZOOM_HOST,

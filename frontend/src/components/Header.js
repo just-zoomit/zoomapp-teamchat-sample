@@ -1,5 +1,10 @@
+/* globals zoomSdk */
+
 import React, { useState } from 'react';
 import { useHistory, NavLink } from 'react-router-dom';
+
+import ShareButton from './Teamchat/ShareButton';
+
 import { FaShare, FaSignInAlt, FaPlay, FaStop, FaExclamationTriangle, FaArrowLeft } from "react-icons/fa";
 import "./Header.css";
 
@@ -72,15 +77,19 @@ function Header(props) {
           ))}
         </ul>
         <div className="icons">
-          {isCollaborating ? (<FaStop className="icon danger" title="End Collaboration" onClick={handleStartClick} />) : (
-            <FaPlay className="icon primary" title="Start Collaboration" onClick={handleStartClick} />
-          )}
-          {isCollaborating ? (
-            <FaExclamationTriangle className="icon warning" title="Leave Collaboration" onClick={handleJoinClick} />
-          ) : (
-            <FaSignInAlt className="icon primary" title="Join Collaboration" onClick={handleJoinClick} />
-          )}
-          <FaShare className="icon primary" title="Share" />
+          {isCollaborating ? (<FaStop className="icon danger" title="End Collaboration" onClick={handleStartClick} />) : 
+                             (<FaPlay className="icon primary" title="Start Collaboration" onClick={handleStartClick} />)
+            }
+          {isCollaborating ? 
+            (<FaExclamationTriangle className="icon warning" title="Leave Collaboration" onClick={handleJoinClick} />) : 
+            (<FaSignInAlt className="icon primary" title="Join Collaboration" onClick={handleJoinClick} />)
+            }
+            
+          <ShareButton
+            user={user}
+            userContextStatus={userContextStatus}
+            meetingChatContext={meetingChatContext}
+                 />
           <FaArrowLeft className="icon primary" title="Back" onClick={goHome} />
         </div>
       </nav>

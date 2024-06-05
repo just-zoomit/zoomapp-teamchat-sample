@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Modal, Form, DropdownButton, Dropdown, ButtonGroup } from 'react-bootstrap';
+import { Modal, Form, DropdownButton, Dropdown, ButtonGroup, Button } from 'react-bootstrap';
+import { FaShare } from "react-icons/fa";
+import './ShareButton.css';
 
 const interactiveCard = {
   "content": {
@@ -13,7 +15,6 @@ const interactiveCard = {
         "type": "actions",
         "items": [
           { "text": "Collaborate in Zoom App", "value": "open", "style": "Primary" },
-
         ]
       }
     ]
@@ -134,13 +135,11 @@ const ShareButton = (props) => {
     handleModalClose();
   };
 
+
+
   return (
     <>
-    <div style={{ display: 'block', width: '100%' }}>
-    
-      <Button variant="primary" style={{ width: '100%' }} onClick={handleModalShow}>
-        Share
-      </Button>
+      <FaShare className="icon share-icon" title="Share" onClick={handleModalShow} />
       
       <Modal show={showModal} onHide={handleModalClose}>
         <Modal.Header closeButton>
@@ -157,7 +156,6 @@ const ShareButton = (props) => {
                   as={ButtonGroup}
                   title={sendButtonText}
                   onSelect={handleSendOptionSelect}
-                  
                 >
                   <Dropdown.Item eventKey="channel">Send to Chat Channel</Dropdown.Item>
                   <Dropdown.Item eventKey="continuous">Send to Continuous Chat</Dropdown.Item>
@@ -172,9 +170,7 @@ const ShareButton = (props) => {
                   id="dropdown-basic-button"
                   title={selectedChannel ? selectedChannel.name : "Channels"}
                   disabled={sendToContinuousChat}
-                 
                 >
-                
                   {channels.map(channel => (
                     <Dropdown.Item
                       key={channel.id}
@@ -184,12 +180,10 @@ const ShareButton = (props) => {
                       {channel.name}
                     </Dropdown.Item>
                   ))}
-
                 </DropdownButton>
               </div>
             </Form.Group>
 
-            
             <Form.Group controlId="formMessage">
               <Form.Label>Message</Form.Label>
               <Form.Control
@@ -211,7 +205,6 @@ const ShareButton = (props) => {
           </Button>
         </Modal.Footer>
       </Modal>
-    </div>
     </>
   );
 };

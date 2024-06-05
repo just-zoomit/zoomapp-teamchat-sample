@@ -190,25 +190,113 @@ const getZoomRecordings = async (accessToken, from, to) => {
   }
 }
 
+// Function to create card content
+const createCardContent = async (accessToken) => {
+  // get deeplink
+  const deeplink = await getDeeplink(accessToken)
+
+  console.log('deeplink from createCardContent:', deeplink.data.deeplink, '\n')
+
+  return JSON.stringify({
+    content: {
+      settings: { form: true },
+      body: [
+        {
+          type: 'attachments',
+          resource_url: deeplink.data.deeplink,
+          img_url:
+            'https://media.giphy.com/media/13lTwJ29JZIffi/giphy.gif?cid=82a1493b2ipv9v574ap6finqhj02upgf1k0cqdw3dtiec1i5&ep=v1_gifs_related&rid=giphy.gif&ct=g',
+          information: {
+            title: {
+              text: 'Deep Link to Zoom App Demo',
+            },
+            description: {
+              text: 'Click the image to open the Zoom App',
+            },
+          },
+        },
+        {
+          type: 'actions',
+          limit: 3,
+          items: [
+            {
+              text: 'Open Zoom App Webview 1',
+              value: 'button1',
+              style: 'Default',
+              action: 'dialog',
+              dialog: {
+                size: 'S',
+                title: {
+                  text: 'Create a ticket',
+                },
+              },
+            },
+            {
+              text: 'Open Zoom App Webview 2',
+              value: 'button2',
+              style: 'Default',
+              action: 'dialog',
+              dialog: {
+                size: 'S',
+                title: {
+                  text: 'Share a ticket',
+                },
+              },
+            },
+          ],
+        },
+      ],
+    },
+  })
+}
+
+// Function to create message data
+const createMessageData = (cardContent) => {
+  return JSON.stringify({
+    message:
+      'This interactive chat message response is triggered when the collaborate button is clicked. In a Zoom Team message, clicking a button initiates an event and sends data to a specified endpoint. You can leverage this event to enhance the application experience by launching functions, opening dialogs, or even initiating real-time communication features. \n  \n 1) Click the button below to open Webview in chat \n 2) Click the image to open the Zoom App',
+    to_channel: 'web_sch_92286de03643446ca285ac58b3517e4c',
+    interactive_cards: [
+      {
+        card_json: cardContent,
+      },
+    ],
+  })
+}
+
+//  Function to send interactive chat message
+const sendInteractiveChat = async (accessToken) => {
+  try {
+    const cardContent = await createCardContent(accessToken)
+    const messageData = createMessageData(cardContent)
+
+    const response = await axios({
+      url: 'https://api.zoom.us/v2/chat/users/me/messages',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      data: messageData,
+    })
+
+    if (response.status >= 400) {
+      throw new Error(`Error sending chat: ${response.statusText}`)
+    }
+
+    return response.data // Return response data if needed
+  } catch (error) {
+    console.error('Failed to send interactive chat message:', error)
+    throw error
+  }
+}
+
 // Add this
 const createCustomZoomMessage = async (payload, options = {}) => {
   // Set default values and override with any provided values
   const {
-    formEnabled = true,
     headText = 'Attendance Form',
     subHeadText = "Please fill out today's attendance form",
-    firstName = ' ',
-    lastName = ' ',
-    course = 'Workforce Development',
-    messageText = 'Please fill out the form',
-    messageBold = true,
-    datepickerInitialDate = '2024/5/10',
-    actionId = 'datepicker123',
-    dividerStyle = { bold: false, dotted: false, color: '#98a0a9' },
-    submitButtonText = 'Submit',
-    submitButtonValue = 'submit',
-    submitButtonStyle = 'Primary',
-    submitButtonIsSubmit = true,
   } = options
 
   const chatBody = {
@@ -224,79 +312,12 @@ const createCustomZoomMessage = async (payload, options = {}) => {
     },
   }
 
-  const chatBodyx = {
-    operatorId: payload.operator_id,
-    triggerId: payload.object.trigger_id,
-    content: {
-      settings: {
-        form: formEnabled,
-      },
-      head: {
-        text: headText,
-        sub_head: {
-          text: subHeadText,
-        },
-      },
-      body: [
-        {
-          type: 'fields',
-          items: [
-            {
-              key: 'First Name',
-              value: firstName,
-              editable: true,
-            },
-            {
-              key: 'Last Name',
-              value: lastName,
-              editable: true,
-            },
-            {
-              key: 'Course',
-              value: course,
-              editable: true,
-            },
-          ],
-        },
-        {
-          type: 'message',
-          text: messageText,
-          style: {
-            bold: messageBold,
-          },
-        },
-        {
-          type: 'datepicker',
-          initial_date: datepickerInitialDate,
-          action_id: actionId,
-        },
-        {
-          type: 'divider',
-          style: dividerStyle,
-        },
-        {
-          type: 'actions',
-          items: [
-            {
-              text: submitButtonText,
-              value: submitButtonValue,
-              style: submitButtonStyle,
-              submit: submitButtonIsSubmit,
-            },
-          ],
-        },
-      ],
-    },
-  }
-
   // Build the JSON message structure
   return chatBody
 }
 // Attaching card to the chat message
 async function sendUnfurlChat(chatBody, chatbotToken) {
-  const { operatorId, triggerId, content } = await chatBody
-
-  console.log('Content Not Working: ', content)
+  const { operatorId, triggerId } = await chatBody
 
   const unfurlData = JSON.stringify({
     content: {
@@ -308,7 +329,6 @@ async function sendUnfurlChat(chatBody, chatbotToken) {
       },
     },
   })
-  console.log('sendUnfurlChat Expected Output: ', unfurlData)
 
   const response = await axios({
     url: `https://api.zoom.us/v2/im/chat/users/${operatorId}/unfurls/${triggerId}`,
@@ -337,5 +357,6 @@ module.exports = {
   generateChatBody,
   createCustomZoomMessage,
   sendUnfurlChat,
+  sendInteractiveChat,
   listUserChatChannels,
 }

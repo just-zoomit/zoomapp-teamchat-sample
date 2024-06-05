@@ -166,6 +166,9 @@ export const Authorization = (props) => {
 
         <Header
           navLinks={{ userInfo: "User Info", iframe: "IFrame", editor: "Editor" }}
+          user={user}
+          userContextStatus={userContextStatus}
+          meetingChatContext={meetingChatContext}
         />
 
 
