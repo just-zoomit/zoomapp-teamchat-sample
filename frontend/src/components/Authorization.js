@@ -8,9 +8,6 @@ import Header from "./Header";
 import UserInfo from "./UserInfo";
 import IFrame from "./IFrame";
 
-
-
-
 import TextEditor from './Teamchat/TextEditor';
 import { v4 as uuidV4 } from 'uuid';
 
@@ -135,7 +132,7 @@ export const Authorization = (props) => {
     }
 
     if (userContextStatus === "authorized") {
-      setInGuestMode(false);
+      setInGuestMode(true);
       fetchUser();
     } else if (
       userContextStatus === "unauthenticated" ||
@@ -145,9 +142,6 @@ export const Authorization = (props) => {
     }
   }, [handleUser, handleUserContextStatus, userAuthorized, userContextStatus]);
 
-
-
-  const shouldHideHeader = location.pathname.startsWith('/editor');
 
   return (
     <>
@@ -162,7 +156,6 @@ export const Authorization = (props) => {
 
       <div>
 
-        {/* {!shouldHideHeader && (<HEADER COMPONENT>)} */}
 
         <Header
           navLinks={{ userInfo: "User Info", iframe: "IFrame", editor: "Editor" }}
@@ -199,7 +192,10 @@ export const Authorization = (props) => {
 
           <TextEditor
           user={user}
+          onClick={inGuestMode ? promptAuthorize : authorize}
+          showGuestModePrompt={inGuestMode}
           userContextStatus={userContextStatus}
+          showInClientOAuthPrompt={showInClientOAuthPrompt}
           meetingChatContext={meetingChatContext}
           />
         </Route>

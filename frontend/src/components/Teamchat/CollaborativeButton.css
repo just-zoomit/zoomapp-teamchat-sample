@@ -8,7 +8,7 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px; /* Add some padding for spacing */
+  padding: 0 20px;
 }
 
 header nav {
@@ -18,28 +18,37 @@ header nav {
   justify-content: space-between;
 }
 
-.nav-links {
-  list-style: none;
+.icons {
   display: flex;
   gap: 20px;
-  padding: 0;
-  margin: 0;
 }
 
-.nav-links li {
-  display: inline;
+.icons-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  position: relative;
 }
 
-.nav-links a {
+.icon {
+  font-size: 28px;
+  cursor: pointer;
   color: white;
-  text-decoration: none;
 }
 
-.nav-links a:hover,
-.nav-links a:active,
-.nav-links a.active {
-  color: #95bcf0;
-  padding-bottom: 0.25rem;
-  border-bottom: 4px solid #95bcf0;
+.icon.danger {
+  color: red;
 }
 
+.icon.warning {
+  color: yellow;
+}
+
+.notification-alert {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: auto;
+  font-size: 16px;
+}

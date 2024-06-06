@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Form, DropdownButton, Dropdown, ButtonGroup, Button } from 'react-bootstrap';
-import { FaShare } from "react-icons/fa";
+import { FaComments} from "react-icons/fa";
 import './ShareButton.css';
 
 const interactiveCard = {
@@ -58,6 +58,8 @@ const ShareButton = (props) => {
 
   const { meetingChatContext } = props;
 
+  console.log("meetingChatContext", meetingChatContext);
+
   useEffect(() => {
     fetchChatChannels();
   }, []);
@@ -75,19 +77,23 @@ const ShareButton = (props) => {
   };
 
   const handleModalShow = () => setShowModal(true);
+
   const handleModalClose = () => {
     setShowModal(false);
     setSendButtonText("Send");
     setSendToContinuousChat(false);
     setSelectedChannel(null);
   };
+
   const handleChannelSelect = (channel) => {
     setSelectedChannel(channel);
     setSendButtonText("Send to Chat Channel");
   };
   const handleMessageChange = (e) => setMessage(e.target.value);
+
   const handleSendOptionSelect = (option) => {
     setSendToContinuousChat(option === 'continuous');
+    console.log("sendToContinuousChat", option, meetingChatContext)
     if (option === 'continuous' && meetingChatContext) {
       setSelectedChannel(null);
       setSendButtonText("Send to Continuous Chat");
@@ -139,7 +145,8 @@ const ShareButton = (props) => {
 
   return (
     <>
-      <FaShare className="icon share-icon" title="Share" onClick={handleModalShow} />
+      
+      <FaComments className="icon message-icon" title="Message" onClick={handleModalShow} />
       
       <Modal show={showModal} onHide={handleModalClose}>
         <Modal.Header closeButton>

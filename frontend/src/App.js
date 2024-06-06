@@ -3,11 +3,8 @@ import { useLocation, useHistory } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
 import { apis } from "./apis";
 import { Authorization } from "./components/Authorization";
-import ApiScrollview from "./components/ApiScrollview";
-
 
 import "./App.css";
-
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "quill/dist/quill.snow.css";// for snow theme
@@ -236,16 +233,18 @@ function App() {
       {runningContext !== 'inChat' ? (
       <>
 
-      <ApiScrollview />
+      
 
 
-      <ContextDashboard
+      {/* <ContextDashboard
         user={user}
         userContextStatus={userContextStatus}
-        runningContext={runningContext}
         meetingChatContext={meetingChatContext}
+
+        runningContext={runningContext}
+        
         connected={connected}
-      />
+      /> */}
       
         
         <Authorization
