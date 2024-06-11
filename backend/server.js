@@ -12,6 +12,15 @@ const zoomAppRouter = require('./api/zoomapp/router')
 const zoomRouter = require('./api/zoom/router')
 const thirdPartyOAuthRouter = require('./api/thirdpartyauth/router')
 
+const fs = require('fs')
+const path = require('path')
+const react = require('react')
+const reactDom = require('react-dom/server')
+
+// const App = require('../frontend/src/App.js')
+
+const App = import('../frontend/src/App.js')
+
 // Create app
 const app = express()
 
@@ -41,6 +50,27 @@ if (
 }
 
 app.use('/zoom', zoomRouter)
+
+app.use('/webview', (req, res, next) => {
+  fs.readFile(
+    path.resolve(__dirname, '../frontend/public/index.html'),
+    'utf8',
+    (err, data) => {
+      if (err) {
+        console.error(err)
+        return res.status(500).send('An error occurred')
+      }
+
+      const appString = reactDom.renderToString(react.createElement(App))
+      const html = data.replace(
+        '<div id="root"></div>',
+        `<div id="root">${appString}</div>`
+      )
+
+      res.send(html)
+    }
+  )
+})
 
 app.get('/hello', (req, res) => {
   res.send('Hello Zoom Apps!')
