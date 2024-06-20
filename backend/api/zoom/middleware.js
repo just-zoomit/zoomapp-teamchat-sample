@@ -5,6 +5,7 @@ const store = require('../../util/store')
 // Middleware to automatically refresh an auth token in case of expiration
 const getUser = async (req, res, next) => {
   const zoomUserId = req?.session?.user
+  console.log('0. Get session Data -->', req?.session)
   if (!zoomUserId) {
     return next(
       new Error(
@@ -14,8 +15,14 @@ const getUser = async (req, res, next) => {
   }
 
   try {
+    console.log('1. Get user from session -->', zoomUserId, '\n')
+    
+
     const appUser = await store.getUser(zoomUserId)
     req.appUser = appUser
+
+
+
     return next()
   } catch (error) {
     return next(new Error('Error getting user from session: ', error))

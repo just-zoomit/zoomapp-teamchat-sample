@@ -74,8 +74,13 @@ export const Authorization = (props) => {
   useEffect(() => {
     // this is not the best way to make sure > 1 instances are not registered
     console.log("In-Client OAuth flow: onAuthorized event listener added");
+    
     zoomSdk.addEventListener("onAuthorized", (event) => {
       const { code, state } = event;
+
+      console.log("onAuthorized event fired -->", event);
+
+
       console.log("3. onAuthorized event fired.");
       console.log(
         "3a. Here is the event passed to event listener callback, with code and state: ", event);

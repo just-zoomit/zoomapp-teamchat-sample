@@ -52,3 +52,25 @@ header nav {
   height: auto;
   font-size: 16px;
 }
+
+/* Media query for smaller screens */
+@media (max-width: 355px) {
+  header {
+    flex-direction: column;
+    height: auto;
+    padding: 10px;
+  }
+  
+  header nav {
+    flex-direction: column;
+  }
+  
+  .icons {
+    padding-top: 15px;
+    gap: 15px;
+  }
+
+  .icon {
+    font-size: 25px;
+  }
+}

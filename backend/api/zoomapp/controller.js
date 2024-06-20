@@ -7,7 +7,7 @@ module.exports = {
   // In-client OAuth 1/2
   async inClientAuthorize(req, res, next) {
     console.log(
-      'IN-CLIENT AUTHORIZE HANDLER ==========================================================',
+      'IN-CLIENT AUTHORIZE HANDLER 1/2 ==========================================================',
       '\n'
     )
 
@@ -31,7 +31,7 @@ module.exports = {
   // In-Client OAuth 2/2
   async inClientOnAuthorized(req, res, next) {
     console.log(
-      'IN-CLIENT ON AUTHORIZED TOKEN HANDLER ==========================================================',
+      'IN-CLIENT ON AUTHORIZED TOKEN HANDLER 2/2==========================================================',
       '\n'
     )
 

@@ -23,6 +23,7 @@ db.on('error', console.error)
 module.exports = {
   getUser: async function (zoomUserId) {
     const user = await getAsync(zoomUserId)
+    console.log('User from store:', user)
     if (!user) {
       console.log(
         'User not found.  This is normal if the user has added via In-Client (or if you have restarted Docker without closing and reloading the app)'
@@ -53,6 +54,7 @@ module.exports = {
   },
 
   updateUser: async function (zoomUserId, data) {
+    console.log('Updating user:', zoomUserId, data)
     const userData = await getAsync(zoomUserId)
     const existingUser = JSON.parse(encrypt.beforeDeserialization(userData))
     const updatedUser = { ...existingUser, ...data }

@@ -58,10 +58,8 @@ const ShareButton = (props) => {
 
   const { meetingChatContext } = props;
 
-  console.log("meetingChatContext", meetingChatContext);
-
   useEffect(() => {
-    fetchChatChannels();
+    // fetchChatChannels();
   }, []);
 
   const fetchChatChannels = async () => {
@@ -89,6 +87,7 @@ const ShareButton = (props) => {
     setSelectedChannel(channel);
     setSendButtonText("Send to Chat Channel");
   };
+
   const handleMessageChange = (e) => setMessage(e.target.value);
 
   const handleSendOptionSelect = (option) => {
@@ -123,7 +122,19 @@ const ShareButton = (props) => {
       console.error("Error sending message:", error);
     }
   };
+  
 
+
+/*
+ Zoom API endpoint to send a chat message to a channel
+ @Endpoint POST /zoom/sendAChatMessage
+ @URL https://developers.zoom.us/docs/team-chat-apps/apis/#operation/sendaChatMessage
+
+ @param {string} message - The message to send
+ @param {string} channelId - The ID of the channel to send the message to
+ @example
+  sendMessage("Hello, Zoom Team Chat!", "channelId123");
+*/
   const sendMessage = async (message, channelId) => {
     const data = createMessagePayload(message, channelId);
     const response = await fetch("/zoom/sendAChatMessage", {

@@ -19,7 +19,7 @@ const reactDom = require('react-dom/server')
 
 // const App = require('../frontend/src/App.js')
 
-const App = import('../frontend/src/App.js')
+// const App = import('../frontend/src/App.js')
 
 // Create app
 const app = express()

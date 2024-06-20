@@ -10,7 +10,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "quill/dist/quill.snow.css";// for snow theme
 import ContextDashboard from "./components/ContextDashboard";
 
-import ZoomCard from "./components/Teamchat/PreviewContentCard";
+import ZoomCard from "./components/Teamchat/PreviewComposeCard";
 
 
 
@@ -233,19 +233,6 @@ function App() {
       {runningContext !== 'inChat' ? (
       <>
 
-      
-
-
-      {/* <ContextDashboard
-        user={user}
-        userContextStatus={userContextStatus}
-        meetingChatContext={meetingChatContext}
-
-        runningContext={runningContext}
-        
-        connected={connected}
-      /> */}
-      
         
         <Authorization
           handleError={setError}

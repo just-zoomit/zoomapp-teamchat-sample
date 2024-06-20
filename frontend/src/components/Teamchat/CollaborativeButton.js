@@ -1,6 +1,7 @@
 /* globals zoomSdk */
 import React, { useState } from 'react';
 import { FaSignInAlt, FaUsers, FaStop, FaExclamationTriangle, FaArrowLeft } from "react-icons/fa";
+
 import ShareButton from './ShareButton';
 import "./CollaborativeButton.css";
 
@@ -61,7 +62,7 @@ const CollaborativeButton = ({
     }
   };
 
-  const goHome = () => history.push('/userInfo');
+  
 
   return (
     <div className="collaborative-button-container">
@@ -81,7 +82,7 @@ const CollaborativeButton = ({
           userContextStatus={userContextStatus}
           meetingChatContext={meetingChatContext}
         />
-        <FaArrowLeft className="icon primary" title="Back" onClick={goHome} />
+       
       </div>
 
       {showNotification && (
