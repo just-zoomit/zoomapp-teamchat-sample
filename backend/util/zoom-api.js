@@ -251,11 +251,11 @@ const createCardContent = async (accessToken) => {
 }
 
 // Function to create message data
-const createMessageData = (cardContent) => {
+const createMessageData = (cardContent, channel) => {
   return JSON.stringify({
     message:
       'This interactive chat message response is triggered when the collaborate button is clicked. In a Zoom Team message, clicking a button initiates an event and sends data to a specified endpoint. You can leverage this event to enhance the application experience by launching functions, opening dialogs, or even initiating real-time communication features. \n  \n 1) Click the button below to open Webview in chat \n 2) Click the image to open the Zoom App',
-    to_channel: 'web_sch_92286de03643446ca285ac58b3517e4c',
+    to_channel: channel,
     interactive_cards: [
       {
         card_json: cardContent,
@@ -265,10 +265,10 @@ const createMessageData = (cardContent) => {
 }
 
 //  Function to send interactive chat message
-const sendInteractiveChat = async (accessToken) => {
+const sendInteractiveChat = async (accessToken, channel) => {
   try {
     const cardContent = await createCardContent(accessToken)
-    const messageData = createMessageData(cardContent)
+    const messageData = createMessageData(cardContent, channel)
 
     const response = await axios({
       url: 'https://api.zoom.us/v2/chat/users/me/messages',
@@ -322,11 +322,33 @@ async function sendUnfurlChat(chatBody, chatbotToken) {
   const unfurlData = JSON.stringify({
     content: {
       head: {
-        text: 'Unfurl Message',
+        text: 'Unfurled Message',
         sub_head: {
           text: 'Easily Unfurl links with your Marketplace Team Chat app! When you share a link from an approved domain, it automatically generates a preview of the linked content. This is super handy for sharing links during continuous meetings or in Team Chat channels.',
         },
       },
+      body: [
+        {
+          type: 'video',
+          title: {
+            text: '<https://youtu.be/otlyDxnU-RI?si=6b9UWM-UV3Qw1vkr|How To Create a Zoom App | Zoom AI Collaboration Platform Developer Tools  >',
+            is_markdown_support: true,
+          },
+          action_id: 'video_play',
+          video_url: 'https://youtu.be/otlyDxnU-RI?si=O6DnuNu5aHr3R3TR',
+          thumbnail_url:
+            'https://i.ytimg.com/vi/otlyDxnU-RI/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGBYgRyh_MA8=&rs=AOn4CLChclc14y_XgAkqOCDdCB6JqZlF-g',
+          author_name: 'Zoom for Developers',
+          provider_name: 'YouTube',
+          provider_icon_url:
+            'https://www.youtube.com/s/desktop/661c298b/img/favicon.ico',
+          title_url: 'https://www.youtube.com/watch?v=3tOz6vkctjA',
+        },
+        {
+          type: 'progress_bar',
+          value: 50,
+        },
+      ],
     },
   })
 

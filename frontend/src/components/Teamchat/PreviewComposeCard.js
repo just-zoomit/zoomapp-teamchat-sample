@@ -1,8 +1,9 @@
 /* globals zoomSdk */
 import React, { useState, useEffect } from 'react';
 import { Button, Form, InputGroup, FormControl, ListGroup } from "react-bootstrap";
+import { BitmapVal } from  './bitmapModule';
 
-const BitmapValue = "Qk06AAAAAAAAADYAAAAoAAAAAQAAAAEAAAABABgAAAAAAAQAAADEDgAAxA4AAAAAAAAAAAAAAgD+AA==";
+const BitmapValue = BitmapVal;
 
 const ZoomCard = () => {
   const [error, setError] = useState(null);
@@ -10,6 +11,7 @@ const ZoomCard = () => {
   const [recordings, setRecordings] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRecording, setSelectedRecording] = useState(null);
+ 
   const [bitmap, setBitmap] = useState(BitmapValue);
 
   useEffect(() => {

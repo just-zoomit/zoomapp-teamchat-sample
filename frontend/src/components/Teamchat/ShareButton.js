@@ -59,7 +59,7 @@ const ShareButton = (props) => {
   const { meetingChatContext } = props;
 
   useEffect(() => {
-    // fetchChatChannels();
+    fetchChatChannels();
   }, []);
 
   const fetchChatChannels = async () => {

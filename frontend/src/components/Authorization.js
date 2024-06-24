@@ -74,7 +74,7 @@ export const Authorization = (props) => {
   useEffect(() => {
     // this is not the best way to make sure > 1 instances are not registered
     console.log("In-Client OAuth flow: onAuthorized event listener added");
-    
+
     zoomSdk.addEventListener("onAuthorized", (event) => {
       const { code, state } = event;
 
@@ -150,14 +150,14 @@ export const Authorization = (props) => {
 
   return (
     <>
-      <p>You are on this route: {location.pathname}</p>
+      {/* <p>You are on this route: {location.pathname}</p>
 
       {!inGuestMode && <Button
         variant="primary"
         onClick={inGuestMode ? promptAuthorize : authorize}
       >
         {inGuestMode ? "promptAuthorize" : "authorize"}
-      </Button>}
+      </Button>} */}
 
       <div>
 

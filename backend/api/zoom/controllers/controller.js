@@ -169,7 +169,7 @@ module.exports = {
         return res.status(404).send('User not found.');
       }
 
-      const recordings = await zoomApi.getZoomRecordings(appUser.accessToken, "2024-04-06", "2024-05-30");
+      const recordings = await zoomApi.getZoomRecordings(appUser.accessToken, "2024-04-06", "2024-06-24");
       console.log('Recordings Sent-->:', recordings);
       res.status(200).send(recordings);
     } catch (error) {
@@ -235,6 +235,10 @@ module.exports = {
 
       const users = req?.body?.payload?.userId
 
+      const channel = req?.body?.payload?.toJid
+
+      console.log('Request Channel:', channel)
+
       if (!users) {
         return next(new Error('No session or no user. You may need to close and reload or reinstall the application'))
       }
@@ -244,7 +248,7 @@ module.exports = {
       console.log('App User Interactive:', appUser)
   
   
-      await zoomApi.sendInteractiveChat( appUser.accessToken); // Corrected function name
+      await zoomApi.sendInteractiveChat(appUser.accessToken,channel); // Corrected function name
   
       res.status(200).send();
     } catch (error) {
